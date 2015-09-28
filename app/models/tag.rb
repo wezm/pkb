@@ -34,4 +34,8 @@ class Tag
     pages.count
   end
 
+  def sorted_pages
+    pages.sort { |a,b| a.name <=> b.name }
+  end
+
 end
