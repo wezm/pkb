@@ -1,0 +1,132 @@
+$sans-serif: "Helvetica Neue", Helvetica, Arial, sans-serif;
+$serif: 'Calisto MT', 'Bookman Old Style', Bookman, 'Goudy Old Style', Garamond, 'Hoefler Text', 'Bitstream Charter', Georgia, serif;
+$monospace: Consolas, Menlo, monosace;
+
+$text-color: #424242;
+$link-color: #265C83;
+$heading-color: darken($text-color, 10);
+
+body {
+  margin: 40px auto;
+  max-width: 650px;
+  line-height: 1.6;
+  font-size: 21px;
+  font-family: $serif;
+  color: $text-color;
+  padding: 0 10px
+}
+
+// From http://mrmrs.io/links/
+a { color: $link-color; }
+
+a:link,
+a:visited { color: $link-color; }
+a:hover   { color: lighten($link-color, 20); }
+a:active  { color: #007BE6; }
+
+
+header {
+  h1 {
+    font-size: 2rem;
+  }
+}
+
+h1,h2,h3,h4,h5,h6 {
+  line-height: 1.2;
+  color: $heading-color;
+
+  a,
+  a:link,
+  a:visited,
+  a:hover,
+  a:active {
+    color: inherit;
+  }
+}
+h1 {
+  font-family: $serif;
+  font-size: 3rem;
+}
+
+pre {
+  overflow-x: auto;
+}
+code {
+  font-family: $monospace;
+  font-size: 1rem;
+}
+
+article {
+  p {
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    hyphens: auto;
+  }
+}
+
+.list-flat {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    display: inline;
+  }
+}
+
+.list-spaced-left {
+  li {
+    margin-left: 1rem;
+  }
+}
+.list-spaced-right {
+  li {
+    margin-right: 1rem;
+  }
+}
+
+.no-decoration {
+  text-decoration: none;
+}
+
+.no-margin {
+  margin: 0;
+}
+
+.no-margin-top {
+  margin: 0;
+}
+
+.right {
+  float: right;
+}
+
+.top-gap {
+  margin-top: 10vh;
+}
+.bottom-gap {
+  margin-bottom: 10vh;
+}
+
+.smaller-font {
+  font-size: smaller;
+}
+.lighten {
+  color: lighten($text-color, 10);
+}
+
+.huge-font {
+  font-size: 48px;
+}
+
+.badge {
+  font-family: $monospace;
+  font-weight: bold;
+  background-color: lighten($text-color, 60);
+  padding: 0 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  display: inline-block;
+  vertical-align: text-top;
+}
+
