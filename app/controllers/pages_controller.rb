@@ -1,6 +1,6 @@
 class PagesController < ApplicationController
 
-  before_filter :cache_in_varnish, :only => [:index, :show]
+  before_filter :cache_in_varnish, :only => [:index, :show, :home]
 
   def index
     @pages = Page.all.sort { |a,b| a.name <=> b.name }
