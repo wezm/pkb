@@ -46,4 +46,5 @@ group :development do
 end
 
 gem 'rdiscount'
+gem 'sentry-raven'
 
