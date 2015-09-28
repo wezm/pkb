@@ -8,6 +8,8 @@ class TagsController < ApplicationController
 
   def show
     @tag = Tag.find(params[:id])
+  rescue Tag::NotFound
+    raise ActionController::RoutingError, "Not Found"
   end
 
 end

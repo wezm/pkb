@@ -8,6 +8,8 @@ class PagesController < ApplicationController
 
   def show
     @page = Page.new(params[:id])
+  rescue Page::NotFound
+    raise ActionController::RoutingError, "Not Found"
   end
 
   def home

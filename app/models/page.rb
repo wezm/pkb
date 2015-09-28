@@ -1,5 +1,7 @@
 class Page
 
+  class NotFound < StandardError; end
+
   attr_reader :name
 
   def self.all
@@ -13,6 +15,7 @@ class Page
   def initialize(name)
     @name = name.to_s
     @path = self.class.basepath.join("#{name}.md")
+    raise NotFound, "unable to find page with name #{name.inspect}" unless @path.exist?
   end
   # TODO: Catch expected errors and wrap in something that controller can catch
 

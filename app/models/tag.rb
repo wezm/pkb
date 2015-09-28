@@ -1,5 +1,7 @@
 class Tag
 
+  class NotFound < StandardError; end
+
   attr_reader :name, :pages
 
   def self.all
@@ -16,8 +18,8 @@ class Tag
   end
 
   def self.find(name)
-    tag = all.bsearch { |tag| tag.name >= name }
-    raise "Not Found" if tag.nil?
+    tag = all.find { |tag| tag.name == name }
+    raise NotFound, "unable to find tag with name #{name.inspect}" if tag.nil?
     tag
   end
 
