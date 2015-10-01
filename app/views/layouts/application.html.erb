@@ -20,8 +20,10 @@
 
       <h1 class="no-margin"><%= link_to "Linked List", root_path, :class => 'no-decoration' %></h1>
       <nav class="list-flat list-spaced-left right">
-        <li><%= link_to 'Index', pages_path %></li>
-        <li><%= link_to 'Tags', tags_path %></li>
+        <ul>
+          <li><%= link_to 'Index', pages_path %></li>
+          <li><%= link_to 'Tags', tags_path %></li>
+        </ul>
       </nav>
       <p class="no-margin-top lighten">A personal knowledge base</p>
     </header>
