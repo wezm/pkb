@@ -4,7 +4,7 @@
 
 <ul>
   <% @tags.each do |tag| %>
-    <li><%= link_to tag.name, tag_path(tag) %> <span class="badge lighten"><%= tag.page_count %></span></li>
+    <li><%= link_to tag.name, tag_path(tag) %> <span class="badge lighten monospace"><%= tag.page_count %></span></li>
   <% end %>
 </ul>
 

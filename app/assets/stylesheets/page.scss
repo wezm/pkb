@@ -34,6 +34,7 @@ header {
 h1,h2,h3,h4,h5,h6 {
   line-height: 1.2;
   color: $heading-color;
+  position: relative;
 
   a,
   a:link,
@@ -42,7 +43,30 @@ h1,h2,h3,h4,h5,h6 {
   a:active {
     color: inherit;
   }
+
+  .anchor {
+    width: 1em;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    .link-icon {
+      display: none;
+      color: lighten($text-color, 50);
+      font-weight: normal;
+    }
+  }
+
+  &:hover .anchor {
+    margin-left: -1.25em;
+    padding-left: 0.5em; // To give some leeway for overshooting with the mouse pointer
+
+    .link-icon {
+      display: inline-block;
+    }
+  }
 }
+
 h1 {
   font-family: $serif;
   font-size: 3rem;
@@ -120,7 +144,6 @@ article {
 }
 
 .badge {
-  font-family: $monospace;
   font-weight: bold;
   background-color: lighten($text-color, 60);
   padding: 0 0.5rem;
@@ -128,5 +151,9 @@ article {
   font-size: 0.75rem;
   display: inline-block;
   vertical-align: text-top;
+}
+
+.monospace {
+  font-family: $monospace;
 }
 

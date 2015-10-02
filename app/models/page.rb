@@ -2,6 +2,8 @@ class Page
 
   class NotFound < StandardError; end
 
+  include Rails.application.routes.url_helpers
+
   attr_reader :name
 
   def self.all
@@ -27,8 +29,9 @@ class Page
     name.titleize
   end
 
+  # TODO: Move to presenter/view class
   def to_html
-    markdown.to_html
+    HeadingLinker.new(markdown.to_html, page_path(self)).to_html
   end
 
   def tags
@@ -65,7 +68,7 @@ private
                       markdown = content
                     end
 
-                    RDiscount.new(markdown, :smart)
+                    RDiscount.new(markdown, :smart, :autolink)
                   end
   end
 
