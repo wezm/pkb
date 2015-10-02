@@ -48,4 +48,5 @@ end
 gem 'rdiscount'
 gem 'sentry-raven'
 gem 'nokogiri'
+gem 'rouge'
 

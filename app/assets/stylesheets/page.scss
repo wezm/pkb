@@ -1,6 +1,6 @@
 $sans-serif: "Helvetica Neue", Helvetica, Arial, sans-serif;
 $serif: "Hoefler Text", Cambria, Utopia, "Liberation Serif", "Nimbus Roman No9 L Regular", Times, "Times New Roman", serif;;
-$monospace: Consolas, Menlo, monosace;
+$monospace: PragmataPro, Consolas, Menlo, monospace;
 
 $text-color: #424242;
 $link-color: #265C83;
@@ -73,11 +73,13 @@ h1 {
 }
 
 pre {
-  overflow-x: auto;
+  overflow: auto;
+  margin-bottom: 1em;
+  line-height: 1;
 }
 code {
   font-family: $monospace;
-  font-size: 1rem;
+  font-size: 0.8rem;
 }
 
 article {

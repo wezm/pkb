@@ -31,7 +31,9 @@ class Page
 
   # TODO: Move to presenter/view class
   def to_html
-    HeadingLinker.new(markdown.to_html, page_path(self)).to_html
+    HeadingLinker.new(markdown_doc, page_path(self)).link_headings!
+    Highlighter.new(markdown_doc).highlight!
+    markdown_doc.to_html
   end
 
   def tags
@@ -70,6 +72,10 @@ private
 
                     RDiscount.new(markdown, :smart, :autolink)
                   end
+  end
+
+  def markdown_doc
+    @markdown_doc ||= Nokogiri::HTML.fragment(markdown.to_html)
   end
 
 end

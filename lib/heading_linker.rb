@@ -1,20 +1,17 @@
 class HeadingLinker
 
-  def initialize(html, document_path)
-    @html = html
+  attr_reader :doc
+
+  def initialize(doc, document_path)
+    @doc = doc
     @document_path = document_path
   end
 
-  def to_html
+  def link_headings!
     add_anchors_to_headers!
-    doc.to_html
   end
 
 private
-
-  def doc
-    @doc ||= Nokogiri::HTML.fragment(@html)
-  end
 
   def add_anchors_to_headers!
     doc.css('h1,h2,h3,h4,h5,h6').each do |heading|
