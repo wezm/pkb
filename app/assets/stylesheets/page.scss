@@ -24,7 +24,6 @@ a:visited { color: $link-color; }
 a:hover   { color: lighten($link-color, 20); }
 a:active  { color: #007BE6; }
 
-
 h1,h2,h3,h4,h5,h6 {
   line-height: 1.2;
   color: $heading-color;
@@ -62,7 +61,6 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 h1 {
-  font-family: $serif;
   font-size: 3rem;
 }
 
@@ -77,9 +75,19 @@ code {
 }
 
 header {
-  h1 {
+  strong {
     font-size: 2rem;
     position: static;
+    display: block;
+    line-height: 1.2;
+
+    a,
+    a:link,
+    a:visited,
+    a:hover,
+    a:active {
+      color: $heading-color;
+    }
   }
 }
 
@@ -126,6 +134,15 @@ article {
 
 .right {
   float: right;
+}
+.clearfix:after {
+  clear: both;
+  content: ".";
+  display: block;
+  font-size: 0;
+  line-height: 0;
+  height: 0;
+  overflow: hidden;
 }
 
 .top-gap {
