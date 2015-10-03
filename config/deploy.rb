@@ -32,21 +32,9 @@ set :log_level, :info
 set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/secrets.yml')
 
 # Default value for linked_dirs is []
-set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system')
+set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system', 'pages')
 
 set :bundle_without, [:development, :test]
-
-namespace :deploy do
-
-  desc "Link pages directory"
-  task :link_pages do
-    on roles(:app) do |host|
-      execute :ln, '-s', "~/Sync/#{fetch :application}", release_path + 'pages'
-    end
-  end
-
-end
-
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
@@ -54,4 +42,3 @@ end
 # Default value for keep_releases is 5
 # set :keep_releases, 5
 
-after 'deploy:updated', 'deploy:link_pages'
