@@ -25,12 +25,6 @@ a:hover   { color: lighten($link-color, 20); }
 a:active  { color: #007BE6; }
 
 
-header {
-  h1 {
-    font-size: 2rem;
-  }
-}
-
 h1,h2,h3,h4,h5,h6 {
   line-height: 1.2;
   color: $heading-color;
@@ -80,6 +74,13 @@ pre {
 code {
   font-family: $monospace;
   font-size: 0.8rem;
+}
+
+header {
+  h1 {
+    font-size: 2rem;
+    position: static;
+  }
 }
 
 article {

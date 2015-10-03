@@ -2,7 +2,7 @@ class Page
 
   class NotFound < StandardError; end
 
-  attr_reader :name
+  attr_reader :name, :path
 
   def self.all
     basepath.
@@ -10,6 +10,10 @@ class Page
       select { |path| path.fnmatch('*.md') }.
       map { |path| new(path.basename('.md')) }.
       reject { |page| page.hidden? }
+  end
+
+  def self.home
+    new 'home'
   end
 
   def initialize(name)
@@ -38,6 +42,10 @@ class Page
     metadata.fetch(:tags, [])
   end
 
+  def mtime
+    path.mtime
+  end
+
   def hidden?
     metadata.fetch(:hidden, false)
   end
@@ -57,7 +65,7 @@ private
   end
 
   def content
-    @content ||= @path.read
+    @content ||= path.read
   end
 
   def markdown

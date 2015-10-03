@@ -13,7 +13,7 @@ class PagesController < ApplicationController
   end
 
   def home
-    @page = Page.new('home')
+    @page = Page.home
     render :show
   end
 end
