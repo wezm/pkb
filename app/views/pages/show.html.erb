@@ -1,13 +1,13 @@
 <% content_for :title, @page.title %>
 
 <article>
-  <h1><%= link_to @page.title, page_path(@page), :class => 'no-decoration', :rel => 'self' %></h1>
+  <h1><%= link_to @page.title, page_path(@page), :class => 'no-decoration' %></h1>
 
   <%= raw @page.to_html %>
 
   <ul class="list-flat list-spaced-right">
   <% @page.tags.each do |tag| %>
-    <li><%= link_to "##{tag}", tag_path(tag) %></li>
+    <li><%= link_to "##{tag}", tag_path(tag), :rel => 'tag' %></li>
   <% end %>
   </ul>
 </article>
