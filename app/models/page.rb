@@ -2,8 +2,6 @@ class Page
 
   class NotFound < StandardError; end
 
-  include Rails.application.routes.url_helpers
-
   attr_reader :name
 
   def self.all
@@ -26,13 +24,13 @@ class Page
   end
 
   def title
-    name.titleize
+    metadata.fetch(:title, name.titleize)
   end
 
   # TODO: Move to presenter/view class
   def to_html
-    HeadingLinker.new(markdown_doc, page_path(self)).link_headings!
-    Highlighter.new(markdown_doc).highlight!
+    HeadingLinker.new(markdown_doc).link_headings!
+    CodeHighlighter.new(markdown_doc).highlight!
     markdown_doc.to_html
   end
 

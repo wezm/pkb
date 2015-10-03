@@ -1,6 +1,8 @@
 <% content_for :title, @page.title %>
 
 <article>
+  <h1><%= link_to @page.title, page_path(@page), :class => 'no-decoration', :rel => 'self' %></h1>
+
   <%= raw @page.to_html %>
 
   <ul class="list-flat list-spaced-right">

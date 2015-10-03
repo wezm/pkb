@@ -1,4 +1,4 @@
-class Highlighter
+class CodeHighlighter
 
   LANG_MARKER_REGEX = /^# (\w+)$/
 

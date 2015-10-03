@@ -2,9 +2,8 @@ class HeadingLinker
 
   attr_reader :doc
 
-  def initialize(doc, document_path)
+  def initialize(doc)
     @doc = doc
-    @document_path = document_path
   end
 
   def link_headings!
@@ -20,7 +19,7 @@ private
       a = Nokogiri::XML::Node.new "a", doc
       a['id']    = identifier
       a['class'] = 'anchor'
-      a['href']  = heading.name == 'h1' ? @document_path : "##{identifier}"
+      a['href']  = "##{identifier}"
       a << '<span class="link-icon monospace">#</span>'
 
       heading.prepend_child a
