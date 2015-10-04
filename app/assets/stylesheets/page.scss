@@ -13,7 +13,8 @@ body {
   font-size: 21px;
   font-family: $serif;
   color: $text-color;
-  padding: 0 10px
+  padding: 0 10px;
+  font-variant-numeric: lining-nums;
 }
 
 // From http://mrmrs.io/links/
