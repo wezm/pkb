@@ -22,6 +22,7 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
   # gem 'pry'
+  gem 'rspec-rails'
 end
 
 group :development do
@@ -31,7 +32,7 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 
-  gem 'capistrano-rails', group: :development
+  gem 'capistrano-rails'
   # sudo https://github.com/phusion/passenger/issues/1392
   gem 'capistrano-passenger', '0.0.2'
 end
