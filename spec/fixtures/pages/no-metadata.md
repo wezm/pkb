@@ -1,0 +1,1 @@
+Page without metadata block

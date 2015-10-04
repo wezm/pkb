@@ -2,23 +2,25 @@ class Page
 
   class NotFound < StandardError; end
 
+  YAML_BOUNDARY = "---".freeze
+
   attr_reader :name, :path
 
-  def self.all
+  def self.all(basepath = Rails.root.join('pages'))
     basepath.
       children.
       select { |path| path.fnmatch('*.md') }.
-      map { |path| new(path.basename('.md')) }.
-      reject { |page| page.hidden? }
+      map { |path| new(path.basename('.md'), basepath) }.
+      reject { |page| page.empty? || page.hidden? }
   end
 
   def self.home
     new 'home'
   end
 
-  def initialize(name)
+  def initialize(name, basepath = Rails.root.join('pages'))
     @name = name.to_s
-    @path = self.class.basepath.join("#{name}.md")
+    @path = basepath.join("#{name}.md")
     raise NotFound, "unable to find page with name #{name.inspect}" unless @path.exist?
   end
   # TODO: Catch expected errors and wrap in something that controller can catch
@@ -50,14 +52,14 @@ class Page
     metadata.fetch(:hidden, false)
   end
 
-private
-
-  def self.basepath
-    Rails.root.join('pages')
+  def empty?
+    path.size.zero? || metadata.empty?
   end
 
+private
+
   def metadata
-    @metadata ||= if content.lines.first.rstrip == "---"
+    @metadata ||= if content.lines.first.rstrip == YAML_BOUNDARY
                     YAML.load(content).symbolize_keys
                   else
                     {}
@@ -70,8 +72,8 @@ private
 
   def markdown
     @markdown ||= begin
-                    if content.lines.first.rstrip == "---"
-                      _, _, markdown = content.split('---', 3)
+                    if content.lines.first.rstrip == YAML_BOUNDARY
+                      _, _, markdown = content.split(YAML_BOUNDARY, 3)
                     else
                       markdown = content
                     end
