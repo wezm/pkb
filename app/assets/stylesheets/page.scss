@@ -131,7 +131,7 @@ article {
 }
 
 .no-margin-top {
-  margin: 0;
+  margin-top: 0;
 }
 
 .center-text {
@@ -162,10 +162,6 @@ article {
 }
 .lighten {
   color: lighten($text-color, 10);
-}
-
-.huge-font {
-  font-size: 48px;
 }
 
 .badge {
