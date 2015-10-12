@@ -3,7 +3,7 @@
   <head>
     <meta name="viewport" content="initial-scale=1.0" />
     <meta charset="utf-8" />
-    <title><%= [yield(:title), 'Linked List'].compact.join(' - ') %></title>
+    <title><%= [yield(:title), settings.name].compact.join(' - ') %></title>
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%#= javascript_include_tag 'application' %>
     <%= csrf_meta_tags %>
@@ -11,31 +11,35 @@
   <body>
     <header class="bottom-gap">
       <form method="get" id="search" class="right" action="https://duckduckgo.com/">
-        <input type="hidden" name="sites" value="linkedlist.org"/>
+        <input type="hidden" name="sites" value="<%= settings.domain %>"/>
         <input type="hidden" name="kz" value="-1"/>
         <input type="hidden" name="kaf" value="1"/>
         <input type="text" name="q" maxlength="255" placeholder="Search" autocapitalize="off" autocomplete="off" />
         <input type="submit" value="Search" />
       </form>
 
-      <strong class="no-margin"><%= link_to "Linked List", root_path, :class => 'no-decoration' %></strong>
+      <strong class="no-margin"><%= link_to settings.name, root_path, :class => 'no-decoration' %></strong>
       <nav class="list-flat list-spaced-left right">
         <ul class="no-margin">
           <li><%= link_to 'Index', pages_path %></li>
           <li><%= link_to 'Tags', tags_path %></li>
         </ul>
       </nav>
-      <p class="no-margin-top lighten">A personal knowledge base</p>
+      <p class="no-margin-top lighten"><%= settings.tagline %></p>
     </header>
 
     <%= yield %>
 
     <footer class="top-gap smaller-font">
-      <% copyright = 2015..Date.today.year %>
-      <p class="copyright center-text">
+      <% copyright = settings.copyright_start_year..Date.today.year %>
+      <p class="center-text">
         Copyright &copy;
         <%= [copyright.min, copyright.max].uniq.join(' &ndash; ').html_safe %>
-        <%= link_to 'Wesley Moore', 'http://www.wezm.net/' %>
+        <%= link_to settings.author, settings.author_url %>
+        <br />
+        <span class="smaller-font center-text">
+          Powered by <%= link_to 'pkb', 'https://github.com/wezm/pkb' %>
+        </span>
       </p>
     </footer>
   </body>

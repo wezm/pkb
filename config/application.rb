@@ -30,5 +30,16 @@ module Pkb
     # config.i18n.default_locale = :de
 
     config.autoload_paths << Rails.root.join('lib')
+
+    def settings
+      @settings ||= begin
+        settings = ActiveSupport::OrderedOptions.new
+        yaml = Rails.root.join('config', 'settings.yml')
+        file_settings = YAML.load(IO.read(yaml)) || {}
+        settings.merge!(file_settings.symbolize_keys)
+
+        settings
+      end
+    end
   end
 end
