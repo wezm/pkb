@@ -6,19 +6,35 @@ backend default {
 }
 
 sub vcl_recv {
-  unset req.http.Cookie;
+    unset req.http.Cookie;
 }
 
 sub vcl_backend_response {
-  if (beresp.ttl > 0s) {
-    unset beresp.http.Set-Cookie;
+    # Add asset related cache control headers to fingerprinted assets
+    if (bereq.url ~ "^/assets/.*-[a-f0-9]{32,64}\.[^\.]+$") {
+        # Cache publicly for 1 year (HTTP spec suggests not specifying more then a year)
+        set beresp.ttl = 31557600s;
+        set beresp.http.Cache-Control = "max-age=31557600, public";
 
-    if (beresp.http.Content-Type ~ "html") {
-      // Restore default header
-      set beresp.http.Cache-Control = "max-age=0, private, must-revalidate";
-      return (deliver);
+        # Some browsers still send conditional-GET requests if there's a
+        # Last-Modified header or an ETag header even if they haven't
+        # reached the expiry date sent in the Expires header.
+        unset beresp.http.Last-Modified;
+        unset beresp.http.ETag;
+
+        set beresp.http.Access-Control-Allow-Origin = "https://linkedlist.org";
     }
-  }
+
+    # Strip attempts to set cookies if ttl indicates the response will be cached
+    if (beresp.ttl > 0s) {
+        unset beresp.http.Set-Cookie;
+
+        if (beresp.http.Content-Type ~ "html") {
+            // Restore default header
+            set beresp.http.Cache-Control = "max-age=0, private, must-revalidate";
+            return (deliver);
+        }
+    }
 }
 
 # This is the VCL configuration Varnish will automatically append to your VCL
