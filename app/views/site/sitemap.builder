@@ -5,7 +5,7 @@ xml.urlset(:xmlns => "http://www.sitemaps.org/schemas/sitemap/0.9") {
     xml.loc root_url
     xml.lastmod @home.mtime.iso8601
     xml.changefreq 'weekly'
-    xml.priority '1.0'
+    xml.priority '0.9'
   }
 
   xml.url {
@@ -19,7 +19,7 @@ xml.urlset(:xmlns => "http://www.sitemaps.org/schemas/sitemap/0.9") {
     xml.loc tags_url
     xml.lastmod @pages.map(&:mtime).max.iso8601
     xml.changefreq 'weekly'
-    xml.priority '0.9'
+    xml.priority '0.6'
   }
 
   @pages.each do |page|
@@ -27,7 +27,7 @@ xml.urlset(:xmlns => "http://www.sitemaps.org/schemas/sitemap/0.9") {
       xml.loc page_url(page)
       xml.lastmod page.mtime.iso8601
       xml.changefreq 'weekly'
-      xml.priority '0.8'
+      xml.priority '1.0'
     }
   end
 
@@ -36,7 +36,7 @@ xml.urlset(:xmlns => "http://www.sitemaps.org/schemas/sitemap/0.9") {
       xml.loc tag_url(tag)
       xml.lastmod tag.pages.map(&:mtime).max.iso8601
       xml.changefreq 'weekly'
-      xml.priority '0.7'
+      xml.priority '0.4'
     }
   end
 }
