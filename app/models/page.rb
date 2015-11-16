@@ -6,16 +6,24 @@ class Page
 
   attr_reader :name, :path
 
-  def self.all(basepath = Rails.root.join('pages'))
+  def self.page_files_in(basepath)
     basepath.
       children.
-      select { |path| path.fnmatch('*.md') }.
+      select { |path| path.fnmatch('*.md') }
+  end
+
+  def self.all(basepath = Rails.root.join('pages'))
+    page_files_in(basepath).
       map { |path| new(path.basename('.md'), basepath) }.
       reject { |page| page.empty? || page.hidden? }
   end
 
   def self.home
     new 'home'
+  end
+
+  def self.last_modified(basepath = Rails.root.join('pages'))
+    page_files_in(basepath).map(&:mtime).sort.last
   end
 
   def initialize(name, basepath = Rails.root.join('pages'))

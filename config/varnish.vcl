@@ -30,8 +30,7 @@ sub vcl_backend_response {
         unset beresp.http.Set-Cookie;
 
         if (beresp.http.Content-Type ~ "html") {
-            // Restore default header
-            set beresp.http.Cache-Control = "max-age=0, private, must-revalidate";
+            set beresp.keep = 24h; // Do conditional requests for up to a day after TTL
             return (deliver);
         }
     }

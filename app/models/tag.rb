@@ -40,4 +40,8 @@ class Tag
     pages.sort { |a,b| a.name <=> b.name }
   end
 
+  def last_modified
+    pages.map(&:mtime).sort.last
+  end
+
 end
