@@ -14,9 +14,4 @@ class PagesController < ApplicationController
     raise ActionController::RoutingError, "Not Found"
   end
 
-  def home
-    @page = Page.home
-    expires_in 1.minute, :public => true
-    fresh_when(:last_modified => @page.mtime, :public => true, :template => 'pages/show')
-  end
 end
