@@ -1,4 +1,4 @@
 User-Agent: *
 Disallow: 
-Sitemap: http://linkedlist.org/sitemap.xml
+Sitemap: https://linkedlist.org/sitemap.xml
 
