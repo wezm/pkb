@@ -153,6 +153,9 @@ article {
 .top-gap {
   margin-top: 10vh;
 }
+.top-gap-double-em {
+  margin-top: 2em;
+}
 .bottom-gap {
   margin-bottom: 10vh;
 }
@@ -178,3 +181,8 @@ article {
   font-family: $monospace;
 }
 
+.shaded-panel {
+  background-color: whitesmoke;
+  padding: 0.5em;
+  border-radius: 1px;
+}
