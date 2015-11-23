@@ -14,7 +14,7 @@
         <input type="hidden" name="sites" value="<%= settings.domain %>"/>
         <input type="hidden" name="kz" value="-1"/>
         <input type="hidden" name="kaf" value="1"/>
-        <input type="text" name="q" maxlength="255" placeholder="Search" autocapitalize="off" autocomplete="off" title="Search Linked List" />
+        <%= text_field_tag :q, nil, :maxlength => "255", :placeholder => "Search", :autocapitalize => "off", :autocomplete => "off", :title => "Search #{settings.name}" %>
         <input type="submit" value="Search" />
       </form>
 
