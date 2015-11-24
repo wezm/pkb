@@ -1,7 +1,7 @@
 # pkb -- Personal Knowledge Base
 
-pkb is a small Rails application that allows you to publish a collection of
-Markdown files.
+pkb is a small Rails application that allows you to efficiently publish a 
+collection of Markdown files.
 
 ## Configuration
 
