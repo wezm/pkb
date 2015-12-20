@@ -42,3 +42,13 @@ set :bundle_without, [:development, :test]
 # Default value for keep_releases is 5
 # set :keep_releases, 5
 
+namespace :deploy do
+  task :symlink_dash_snippets do
+    on roles(:app) do
+      execute "if [ ! -f #{shared_path}/pages/dash-snipets.html ]; then ln -sf #{shared_path}/pages/dash-snippets.html #{release_path}/public/dash-snippets.html; fi"
+    end
+  end
+
+  before :updated, :symlink_dash_snippets
+end
+
