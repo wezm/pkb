@@ -26,6 +26,10 @@ class Page
     page_files_in(basepath).map(&:mtime).sort.last
   end
 
+  def self.recently_modified(limit = 10, basepath = Rails.root.join('pages'))
+    all.sort { |a, b| b.mtime <=> a.mtime }.take limit
+  end
+
   def initialize(name, basepath = Rails.root.join('pages'))
     @name = name.to_s
     @path = basepath.join("#{name}.md")
@@ -45,6 +49,7 @@ class Page
   def to_html
     HeadingLinker.new(markdown_doc).link_headings!
     CodeHighlighter.new(markdown_doc).highlight!
+    CustomElements.process!(markdown_doc)
     markdown_doc.to_html
   end
 
