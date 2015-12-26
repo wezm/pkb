@@ -53,7 +53,7 @@ GEM
     capistrano-rails (1.1.5)
       capistrano (~> 3.1)
       capistrano-bundler (~> 1.1)
-    concurrent-ruby (1.0.0)
+    coderay (1.1.0)
     debug_inspector (0.0.2)
     diff-lcs (1.2.5)
     erubis (2.7.0)
@@ -72,6 +72,7 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
+    method_source (0.8.2)
     mime-types (2.99)
     mini_portile2 (2.0.0)
     minitest (5.8.3)
@@ -82,6 +83,13 @@ GEM
     net-ssh (3.0.1)
     nokogiri (1.6.7.1)
       mini_portile2 (~> 2.0.0.rc2)
+    pry (0.10.3)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
+    pry-byebug (3.3.0)
+      byebug (~> 8.0)
+      pry (~> 0.10)
     rack (1.6.4)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -143,6 +151,7 @@ GEM
       rdoc (~> 4.0)
     sentry-raven (0.15.2)
       faraday (>= 0.7.6)
+    slop (3.6.0)
     spring (1.6.1)
     sprockets (2.12.4)
       hike (~> 1.2)
@@ -174,11 +183,11 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  byebug
   capistrano-passenger (= 0.0.2)
   capistrano-rails
   jbuilder (~> 2.0)
   nokogiri
+  pry-byebug
   rails (= 4.2.5)
   rdiscount
   rouge
