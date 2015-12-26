@@ -6,7 +6,7 @@
   <%= raw @page.to_html %>
 
   <div class="smaller-font lighten top-gap-double-em shaded-panel">
-    Last modified: <%= content_tag :abbr, @page.mtime.to_date.to_formatted_s(:rfc822), :title => @page.mtime.iso8601 %>
+    Last modified: <%= content_tag :abbr, @page.mtime.to_date.to_formatted_s(:rfc822), :title => @page.mtime.utc.iso8601 %>
     <ul class="list-flat list-spaced-right">
     <% @page.tags.each do |tag| %>
       <li><%= link_to "##{tag}", tag_path(tag), :rel => 'tag' %></li>
