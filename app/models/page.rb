@@ -61,6 +61,16 @@ class Page
     path.mtime
   end
 
+  def last_modified
+    if name == 'home'
+      # Home page lists recently changed files, so is modified whenever any
+      # other page is modified.
+      Page.last_modified
+    else
+      mtime
+    end
+  end
+
   def hidden?
     metadata.fetch(:hidden, false)
   end

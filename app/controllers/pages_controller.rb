@@ -9,7 +9,7 @@ class PagesController < ApplicationController
   def show
     @page = Page.new(params[:id])
     expires_in 1.minute, :public => true
-    fresh_when(:last_modified => @page.mtime, :public => true)
+    fresh_when(:last_modified => @page.last_modified, :public => true)
   rescue Page::NotFound
     raise ActionController::RoutingError, "Not Found"
   end
