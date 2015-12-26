@@ -1,7 +1,6 @@
 module CustomElements
 
   class RecentlyChangedList
-    extend ActionView::Helpers::DateHelper
 
     def self.process!(doc)
       doc.css('recently-changed-list').each do |elem|
@@ -13,8 +12,7 @@ module CustomElements
               xml << " "
               xml.span(:class => 'smaller-font lighten') {
                 xml << "updated "
-                xml.abbr(time_ago_in_words(page.mtime), :title => page.mtime.iso8601)
-                xml << " ago"
+                xml.abbr(page.mtime.to_formatted_s(:long_ordinal), :title => page.mtime.utc.iso8601)
               }
             }
           end

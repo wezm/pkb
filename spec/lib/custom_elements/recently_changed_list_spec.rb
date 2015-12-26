@@ -18,7 +18,7 @@ describe CustomElements::RecentlyChangedList do
         Nokogiri::XML::Node::SaveOptions::NO_EMPTY_TAGS |
         Nokogiri::XML::Node::SaveOptions::AS_HTML
       html = doc.to_xhtml(:save_with => save_options)
-      expect(html).to include("<ul><li><a href=\"/sample-page\">Sample Page</a> <span class=\"smaller-font lighten\">updated <abbr title=\"2015-10-04T13:01:28+11:00\">3 months</abbr> ago</span></li></ul>")
+      expect(html).to match(%r|<ul><li><a href="/sample-page">Sample Page</a> <span class="smaller-font lighten">updated <abbr title="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z">[^<]+</abbr></span></li></ul>|)
       expect(html).to_not include(%(<recently-changed-list>))
     end
   end
