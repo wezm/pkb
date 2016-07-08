@@ -4,7 +4,7 @@ class CodeHighlighter
 
   def initialize(doc)
     @doc = doc
-    @formatter = Rouge::Formatters::HTML.new(css_class: 'highlight')
+    @formatter = Rouge::Formatters::HTMLPygments.new(Rouge::Formatters::HTML.new, css_class: 'highlight')
   end
 
   def highlight!
