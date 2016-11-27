@@ -6,7 +6,7 @@
 # server 'example.com', user: 'deploy', roles: %w{app db web}, my_property: :my_value
 # server 'example.com', user: 'deploy', roles: %w{app web}, other_property: :other_value
 # server 'db.example.com', user: 'deploy', roles: %w{db}
-server "binaryfinary.binarytrance.com", user: 'linkedlist', roles: %w[app web db], primary: true
+server "eforce.binarytrance.com", user: 'linkedlist', roles: %w[app web db], primary: true
 
 
 # role-based syntax
