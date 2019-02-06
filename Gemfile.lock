@@ -106,6 +106,7 @@ GEM
     pry-byebug (3.6.0)
       byebug (~> 10.0)
       pry (~> 0.10)
+    puma (3.12.0)
     rack (2.0.5)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
@@ -208,6 +209,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   nokogiri
   pry-byebug
+  puma
   rails (~> 5.0)
   rdiscount
   rouge
@@ -219,4 +221,4 @@ DEPENDENCIES
   web-console (~> 2.0)
 
 BUNDLED WITH
-   1.16.1
+   1.17.3
