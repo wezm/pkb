@@ -16,7 +16,9 @@ collection of Markdown files.
 ## Deployment
 
 pkb is designed to be deployed behind a caching proxy such as varnish. There is
-a sample varnish configuration in `config/varnish.vcl`. For getting it on to
-the server Capistrano is recommended. There is a configuration that will need
-adjusting in `config/deploy.rb` and `config/deploy/production.rb`.
+a sample varnish configuration in `config/varnish.vcl`. There is a script for
+building a Docker image: `bin/docker-build`.
 
+The resulting image can be run something like this:
+
+    sudo docker run -it --rm -e 'SECRET_KEY_BASE=asdfasdfasdf' -p 3000:3000/tcp  -v /home/wmoore/Projects/pkb/pages:/home/pkb/pages:ro 51d800a7496b
