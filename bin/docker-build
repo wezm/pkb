@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+
+require 'fileutils'
+require 'shellwords'
+
+REPO_PATH='.git'
+BRANCH='docker'
+CONTEXT_DIR='docker'
+
+def git_revision(repo_path, ref)
+  `git ls-remote #{repo_path.shellescape} #{ref.shellescape} | head -1 | awk '{ print $1 }'`.strip
+end
+
+FileUtils.rm_rf CONTEXT_DIR
+
+# Take a clean copy of the code
+revision = git_revision(REPO_PATH, BRANCH)
+system 'git', 'clone', '-q', REPO_PATH, CONTEXT_DIR
+
+FileUtils.cd(CONTEXT_DIR) do
+  system 'git', 'checkout', '-qb', 'deploy', revision
+  FileUtils.rm_rf '.git'
+end
+
+FileUtils.cp 'Dockerfile', CONTEXT_DIR
+
+FileUtils.cd(CONTEXT_DIR) do
+  system 'sudo', 'docker', 'build', '.'
+end

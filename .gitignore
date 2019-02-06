@@ -13,7 +13,13 @@
 !/log/.keep
 /tmp
 
+# Docker build context
+/docker
+
+# Config files
 /config/database.yml
 /config/secrets.yml
 /config/settings.yml
 
+# Content
+/pages
