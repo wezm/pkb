@@ -25,5 +25,5 @@ end
 FileUtils.cp 'Dockerfile', CONTEXT_DIR
 
 FileUtils.cd(CONTEXT_DIR) do
-  system 'sudo', 'docker', 'build', *(ARGV + ['.'])
+  system 'docker', 'build', *(ARGV + ['.'])
 end
