@@ -6,7 +6,7 @@ ARG PUID=2000
 ARG PGID=2000
 ARG USER=pkb
 
-RUN apk --update add --no-cache ruby-dev ruby-bundler ruby-bigdecimal build-base zlib-dev nodejs tzdata \
+RUN apk --update add --no-cache ruby-dev ruby-bundler ruby-bigdecimal build-base zlib-dev nodejs tzdata linux-headers \
     && addgroup -g ${PGID} ${USER} \
     && adduser -D -u ${PUID} -G ${USER} -h /home/${USER} -D ${USER}
 
