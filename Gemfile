@@ -38,6 +38,5 @@ gem 'sentry-raven'
 gem 'nokogiri'
 gem 'rouge'
 
-# sprockets 3.0.0 breaks asset expiry
-# https://github.com/rails/sprockets-rails/issues/240
-# gem 'sprockets', '< 3.0.0'
+# sprockets 4.0.0 breaks stuff
+gem 'sprockets', '< 4.0.0'
