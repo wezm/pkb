@@ -1,7 +1,7 @@
 $sans-serif: "Helvetica Neue", Helvetica, Arial, sans-serif;
-// et-bembo is in vendor/assets
-$serif: et-bembo, Cambria, Utopia, "Liberation Serif", "Nimbus Roman No9 L Regular", Times, "Times New Roman", serif;
-$monospace: Consolas, "Source Code Pro", Menlo, monospace;
+// Manrope is in vendor/assets
+$serif: "Manrope VF", sans-serif;
+$monospace: PragmataPro, Consolas, "Source Code Pro", Menlo, monospace;
 
 $text-color: #424242;
 $link-color: #265C83;
@@ -11,7 +11,7 @@ body {
   margin: 40px auto;
   max-width: 650px;
   line-height: 1.6;
-  font-size: 21px;
+  font-size: 18px;
   font-family: $serif;
   color: $text-color;
   padding: 0 10px;
