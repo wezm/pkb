@@ -17,7 +17,9 @@ USER ${USER}
 COPY --chown=pkb:pkb Gemfile .
 COPY --chown=pkb:pkb Gemfile.lock .
 
-RUN bundle install -j 4 --deployment --without 'test development'
+RUN bundle config set deployment 'true' && \
+    bundle config set without 'test development' && \
+    bundle install -j 8
 
 COPY --chown=pkb:pkb . .
 
@@ -48,7 +50,9 @@ COPY --chown=pkb:pkb . .
 COPY --chown=pkb:pkb config/secrets.yml.sample config/secrets.yml
 COPY --chown=pkb:pkb config/settings.yml.linkedlist config/settings.yml
 
-RUN bundle install --deployment --without 'test development'
+RUN bundle config set deployment 'true' && \
+    bundle config set without 'test development' && \
+    bundle install -j 8
 
 EXPOSE 3000
 
