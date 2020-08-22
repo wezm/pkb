@@ -63,6 +63,7 @@ GEM
       concurrent-ruby (~> 1.0)
     jbuilder (2.10.0)
       activesupport (>= 5.0.0)
+    json (2.3.1)
     loofah (2.6.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -172,6 +173,7 @@ PLATFORMS
 
 DEPENDENCIES
   jbuilder (~> 2.0)
+  json (~> 2.3.0)
   nokogiri
   pry-byebug
   puma
