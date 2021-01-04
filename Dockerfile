@@ -1,4 +1,4 @@
-FROM wezm-alpine:3.12.1 AS build
+FROM wezm-alpine:3.12.3 AS build
 
 ENV RAILS_ENV=production
 
@@ -26,7 +26,7 @@ COPY --chown=pkb:pkb . .
 RUN bundle exec rake assets:precompile
 
 
-FROM wezm-alpine:3.12.1
+FROM wezm-alpine:3.12.3
 
 ENV RAILS_ENV=production
 ENV RAILS_SERVE_STATIC_FILES=1
