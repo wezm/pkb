@@ -1,0 +1,12 @@
+container:
+  image: ruby:2.7.2
+
+test_task:
+  bundle_cache:
+    folder: /usr/local/bundle
+    fingerprint_script:
+      - echo $RUBY_VERSION
+      - cat Gemfile.lock
+    populate_script: bundle install
+  install_node_script: "apt-get update && apt-get install -y --no-install-recommends nodejs" # required for ExecJS 
+  test_script: bundle exec rake spec
