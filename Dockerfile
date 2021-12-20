@@ -5,6 +5,7 @@ ENV RAILS_ENV=production
 ARG PUID=2000
 ARG PGID=2000
 ARG USER=pkb
+ARG PKB_REVISION=1
 
 RUN apk --update add --no-cache ruby-dev ruby-bundler ruby-bigdecimal build-base zlib-dev nodejs tzdata linux-headers \
     && addgroup -g ${PGID} ${USER} \
