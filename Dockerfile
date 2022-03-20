@@ -1,4 +1,4 @@
-FROM wezm-alpine:3.14.3 AS build
+FROM wezm-alpine:3.14.4 AS build
 
 ENV RAILS_ENV=production
 
