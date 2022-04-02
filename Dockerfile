@@ -1,11 +1,11 @@
-FROM wezm-alpine:3.14.4 AS build
+FROM wezm-alpine:3.14.5 AS build
 
 ENV RAILS_ENV=production
 
 ARG PUID=2000
 ARG PGID=2000
 ARG USER=pkb
-ARG PKB_REVISION=3
+ARG PKB_REVISION=4
 
 RUN apk --update add --no-cache ruby-dev ruby-bundler ruby-bigdecimal build-base zlib-dev nodejs tzdata linux-headers \
     && addgroup -g ${PGID} ${USER} \
