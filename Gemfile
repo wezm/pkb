@@ -36,7 +36,8 @@ end
 
 gem 'rdiscount'
 gem 'sentry-raven'
-gem 'nokogiri'
+gem 'nokogiri', '>= 1.13.4'
+
 gem 'rouge'
 
 # sprockets 4.0.0 breaks stuff
