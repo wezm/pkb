@@ -31,7 +31,7 @@ markup::define! {
                         input[type="submit", value="Search"];
                     }
 
-                    strong."no-margin" { a."no-decoration"[href="/"] { @settings.name } /*<%= link_to settings.name, root_path, :class => 'no-decoration' %>*/ } // FIXME hardcoded href
+                    strong."no-margin" { a."no-decoration"[href=uri!(web::home).to_string()] { @settings.name } }
                     nav[class="list-flat list-spaced-left right"] {
                         ul[class="no-margin"] {
                             li { a[href=uri!(web::page::index).to_string()] { "Index" } }

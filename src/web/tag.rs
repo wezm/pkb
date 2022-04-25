@@ -13,7 +13,7 @@ pub fn routes() -> Vec<Route> {
 }
 
 #[get("/tags/<name>")]
-pub(crate) async fn show<'r>(
+pub(crate) fn show<'r>(
     name: &'r str,
     settings: &State<Settings>,
     flash: Option<FlashMessage<'r>>,
@@ -31,7 +31,7 @@ pub(crate) async fn show<'r>(
 }
 
 #[get("/tags")]
-pub(crate) async fn index<'r>(
+pub(crate) fn index<'r>(
     settings: &State<Settings>,
     flash: Option<FlashMessage<'r>>,
 ) -> Result<RawHtml<String>, PkbError> {

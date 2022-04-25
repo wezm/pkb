@@ -8,13 +8,14 @@ use comrak::plugins::syntect::SyntectAdapter;
 use rocket::fairing::{self, AdHoc, Fairing, Info, Kind};
 use rocket::fs::FileServer;
 use rocket::http::Status;
-use rocket::request::{FromRequest, Outcome};
+use rocket::request::{FlashMessage, FromRequest, Outcome};
 use rocket::response::content::RawHtml;
-use rocket::Catcher;
 use rocket::{Build, Data, Request, Response, Rocket};
+use rocket::{Catcher, State};
 use sentry::types::Dsn;
 
 use crate::settings::Settings;
+use crate::{web, PkbError};
 
 pub fn rocket() -> Rocket<Build> {
     let adapter = Arc::new(SyntectAdapter::new("base16-ocean.dark"));
@@ -22,6 +23,7 @@ pub fn rocket() -> Rocket<Build> {
     rocket::build()
         .attach(RequestTimer(None))
         .manage(adapter)
+        .mount("/", routes![home])
         .mount("/", page::routes())
         .mount("/", tag::routes())
         .attach(AdHoc::config::<Settings>())
@@ -32,6 +34,15 @@ pub fn rocket() -> Rocket<Build> {
 
 pub fn catchers() -> Vec<Catcher> {
     catchers![not_found, internal_server_error]
+}
+
+#[get("/")]
+pub(crate) fn home<'r>(
+    settings: &State<Settings>,
+    flash: Option<FlashMessage<'r>>,
+    adapter: &State<Arc<SyntectAdapter<'_>>>,
+) -> Result<RawHtml<String>, PkbError> {
+    web::page::show("home", settings, flash, adapter)
 }
 
 #[catch(404)]
