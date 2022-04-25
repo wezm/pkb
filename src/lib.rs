@@ -1,5 +1,7 @@
 #[macro_use]
 extern crate rocket;
+#[macro_use]
+extern crate html5ever;
 
 use rocket::http::Status;
 use rocket::response::{content, Responder};
@@ -8,6 +10,7 @@ use std::{fmt, io};
 
 mod page;
 mod settings;
+pub mod string_ext;
 mod tag;
 pub(crate) mod templates;
 pub mod web;

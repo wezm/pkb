@@ -5,7 +5,7 @@ use crate::{templates, web};
 
 markup::define! {
     Show<'a>(page: &'a Page<Loaded>, adapter: &'a SyntectAdapter<'a>) {
-        @markup::raw(templates::markdown(page.markdown(), adapter))
+        @markup::raw(templates::enhance_markup(&templates::markdown(page.markdown(), adapter)))
     }
 
     Index<'a>(pages: &'a [Page<Loaded>]) {
