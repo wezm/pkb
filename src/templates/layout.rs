@@ -4,6 +4,7 @@ use rocket::request::FlashMessage;
 use time::OffsetDateTime;
 
 use crate::settings::Settings;
+use crate::web;
 
 markup::define! {
     Layout<'a, Head: markup::Render, Body: markup::Render>(title: &'a str, head: Head, body: Body, settings: &'a Settings, flash: Option<&'a FlashMessage<'a>>) {
@@ -32,7 +33,7 @@ markup::define! {
                     strong."no-margin" { a."no-decoration"[href="/"] { @settings.name } /*<%= link_to settings.name, root_path, :class => 'no-decoration' %>*/ } // FIXME hardcoded href
                     nav[class="list-flat list-spaced-left right"] {
                         ul[class="no-margin"] {
-                            li { "<%= link_to 'Index', pages_path %>" }
+                            li { a[href=uri!(web::page::index).to_string()] { "Index" } }
                             li { "<%= link_to 'Tags', tags_path %>" }
                         }
                     }

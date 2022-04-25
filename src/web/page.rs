@@ -27,7 +27,7 @@ pub(crate) async fn show<'r>(
         .load()?;
     let page = Layout {
         settings,
-        title: "Home",
+        title: &page.title(),
         flash: flash.as_ref(),
         head: Nil {},
         body: Show {
@@ -40,19 +40,23 @@ pub(crate) async fn show<'r>(
 
 #[get("/pages")]
 pub(crate) async fn index<'r>(
-    name: &'r str,
     settings: &State<Settings>,
     flash: Option<FlashMessage<'r>>,
 ) -> Result<RawHtml<String>, PkbError> {
-    // let page = Layout {
-    //     settings,
-    //     title: "Home",
-    //     flash: flash.as_ref(),
-    //     head: Nil {},
-    //     body: Index {
-    //         pages: &pages,
-    //     },
-    // };
-    // Ok(html(page))
-    todo!()
+    let mut pages = Page::all(&settings.pages_path);
+    pages.sort_by(|a, b| a.name.cmp(&b.name));
+    let pages = pages
+        .into_iter()
+        .filter_map(|page| page.load().ok())
+        .filter(|page| !page.is_hidden())
+        .collect::<Vec<_>>();
+
+    let page = Layout {
+        settings,
+        title: "Index",
+        flash: flash.as_ref(),
+        head: Nil {},
+        body: Index { pages: &pages },
+    };
+    Ok(html(page))
 }

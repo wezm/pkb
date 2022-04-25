@@ -1,4 +1,4 @@
-mod page;
+pub(crate) mod page;
 
 use std::borrow::Borrow;
 use std::sync::Arc;

@@ -1,7 +1,7 @@
 use comrak::plugins::syntect::SyntectAdapter;
 
 use crate::page::{Loaded, Page};
-use crate::templates;
+use crate::{templates, web};
 
 markup::define! {
     Show<'a>(page: &'a Page<Loaded>, adapter: &'a SyntectAdapter<'a>) {
@@ -9,6 +9,12 @@ markup::define! {
     }
 
     Index<'a>(pages: &'a [Page<Loaded>]) {
-        "page index"
+        h2 { "Index" }
+
+        ul {
+            @for page in *pages {
+                li { a[href=uri!(web::page::show(name=&page.name)).to_string()] { @page.title() } }
+            }
+        }
     }
 }
