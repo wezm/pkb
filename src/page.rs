@@ -107,7 +107,7 @@ impl Page<NotLoaded> {
     }
 
     pub(crate) fn all(basepath: &Path) -> Vec<Page<NotLoaded>> {
-        dbg!(Self::page_files_in(basepath)
+        Self::page_files_in(basepath)
             .into_iter()
             .filter_map(|path| {
                 path.file_stem()
@@ -115,7 +115,7 @@ impl Page<NotLoaded> {
                     .and_then(|name| Page::new(name, basepath)) // TODO: Log error to create page?
             })
             .filter(|page| !page.is_empty() /*|| page.is_hidden()*/)
-            .collect())
+            .collect()
     }
 
     fn page_files_in(basepath: &Path) -> Vec<PathBuf> {
@@ -169,7 +169,7 @@ impl Page<Loaded> {
         }
     }
 
-    fn tags(&mut self) -> &[String] {
+    pub(crate) fn tags(&self) -> &[String] {
         &self.metadata().tags
     }
 

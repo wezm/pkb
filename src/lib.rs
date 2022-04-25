@@ -8,6 +8,7 @@ use std::{fmt, io};
 
 mod page;
 mod settings;
+mod tag;
 pub(crate) mod templates;
 pub mod web;
 

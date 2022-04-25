@@ -27,6 +27,7 @@ markup::define! {
                         input[type="hidden", name="kz", value="-1"];
                         input[type="hidden", name="kaf", value="1"];
                         input[type="text", name="q", maxlength="255", placeholder="Search", autocapitalize="off", autocomplete="off", title=format!("Search {}", settings.name) ];
+                        " "
                         input[type="submit", value="Search"];
                     }
 
@@ -34,7 +35,7 @@ markup::define! {
                     nav[class="list-flat list-spaced-left right"] {
                         ul[class="no-margin"] {
                             li { a[href=uri!(web::page::index).to_string()] { "Index" } }
-                            li { "<%= link_to 'Tags', tags_path %>" }
+                            li { a[href=uri!(web::tag::index).to_string()] { "Tags" } }
                         }
                     }
                     p."no-margin-top lighten" { @settings.tagline }

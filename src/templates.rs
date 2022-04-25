@@ -1,5 +1,6 @@
 mod layout;
 pub(crate) mod page;
+pub(crate) mod tag;
 
 use comrak::plugins::syntect::SyntectAdapter;
 

@@ -1,6 +1,6 @@
 pub(crate) mod page;
+pub(crate) mod tag;
 
-use std::borrow::Borrow;
 use std::sync::Arc;
 use std::time::Instant;
 
@@ -8,11 +8,10 @@ use comrak::plugins::syntect::SyntectAdapter;
 use rocket::fairing::{self, AdHoc, Fairing, Info, Kind};
 use rocket::fs::FileServer;
 use rocket::http::Status;
-use rocket::request::FlashMessage;
 use rocket::request::{FromRequest, Outcome};
 use rocket::response::content::RawHtml;
+use rocket::Catcher;
 use rocket::{Build, Data, Request, Response, Rocket};
-use rocket::{Catcher, Route, State};
 use sentry::types::Dsn;
 
 use crate::settings::Settings;
@@ -24,6 +23,7 @@ pub fn rocket() -> Rocket<Build> {
         .attach(RequestTimer(None))
         .manage(adapter)
         .mount("/", page::routes())
+        .mount("/", tag::routes())
         .attach(AdHoc::config::<Settings>())
         .attach(init_settings())
         .mount("/public", FileServer::from("public"))
@@ -50,7 +50,7 @@ pub fn init_settings() -> AdHoc {
     AdHoc::try_on_ignite("Init settings", install_sentry)
 }
 
-async fn install_sentry(mut rocket: Rocket<Build>) -> fairing::Result {
+async fn install_sentry(rocket: Rocket<Build>) -> fairing::Result {
     let settings = rocket.state::<Settings>().expect("no settings in state");
 
     if let Some(dsn) = settings.sentry_dsn.as_deref() {
