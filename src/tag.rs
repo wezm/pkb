@@ -51,7 +51,17 @@ impl Tag {
             .collect()
     }
 
+    pub fn find(name: &str, basepath: &Path) -> Option<Tag> {
+        Tag::all(basepath).into_iter().find(|tag| tag.name == name)
+    }
+
     pub fn page_count(&self) -> usize {
         self.pages.len()
+    }
+
+    pub fn sorted_pages(&self) -> Pages {
+        let mut sorted = self.pages.clone();
+        sorted.sort_by(|a, b| a.name.cmp(&b.name));
+        sorted
     }
 }

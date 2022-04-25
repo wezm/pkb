@@ -2,9 +2,17 @@ use crate::tag::Tag;
 use crate::web;
 
 markup::define! {
-    // Show<'a>(tag: &'a Page<Loaded>, adapter: &'a SyntectAdapter<'a>) {
-    //     @markup::raw(templates::markdown(tag.markdown(), adapter))
-    // }
+    Show<'a>(tag: &'a Tag) {
+        h1 { @tag.name }
+
+        ul {
+            @for page in tag.sorted_pages() {
+                li {
+                    a[href=uri!(web::page::show(name=&page.name)).to_string()] { @page.title() }
+                }
+            }
+        }
+    }
 
     Index<'a>(tags: &'a [Tag]) {
         h2 { "Tags" }

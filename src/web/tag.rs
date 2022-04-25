@@ -4,7 +4,7 @@ use rocket::{Route, State};
 
 use crate::settings::Settings;
 use crate::tag::Tag;
-use crate::templates::tag::Index;
+use crate::templates::tag::{Index, Show};
 use crate::templates::{Layout, Nil};
 use crate::{html, PkbError};
 
@@ -18,7 +18,16 @@ pub(crate) async fn show<'r>(
     settings: &State<Settings>,
     flash: Option<FlashMessage<'r>>,
 ) -> Result<RawHtml<String>, PkbError> {
-    todo!()
+    let tag = Tag::find(name, &settings.pages_path).ok_or(PkbError::PageNotFound)?;
+
+    let page = Layout {
+        settings,
+        title: "Tags",
+        flash: flash.as_ref(),
+        head: Nil {},
+        body: Show { tag: &tag },
+    };
+    Ok(html(page))
 }
 
 #[get("/tags")]
