@@ -23,3 +23,9 @@
 
 # Content
 /pages
+
+
+# Added by cargo
+
+/target
+/Rocket.toml
