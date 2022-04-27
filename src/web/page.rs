@@ -32,6 +32,7 @@ pub(crate) fn show<'r>(
         head: Nil {},
         body: Show {
             page: &page,
+            settings,
             adapter: &*adapter,
         },
     };

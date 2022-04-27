@@ -5,6 +5,9 @@ use std::time::SystemTime;
 use std::{fs, io};
 
 use serde::Deserialize;
+use time::format_description::well_known::Rfc3339;
+use time::macros::format_description;
+use time::OffsetDateTime;
 use titlecase::titlecase;
 
 const RECENTLY_MODIFIED_LIMIT: usize = 10;
@@ -40,17 +43,6 @@ impl<T> Page<T>
 where
     T: Debug,
 {
-    // fn recently_modified(basepath: &Path) -> Vec<Page<Loaded>> {
-    //     Self::all(basepath)
-    //         .into_iter()
-    //         .filter_map(|page| page.load().ok())
-    //         .filter(|page| !page.is_hidden())
-    //         .take(RECENTLY_MODIFIED_LIMIT)
-    //         .collect()
-    //     // pages.truncate(RECENTLY_MODIFIED_LIMIT);
-    //     // todo!("all.sort {{ |a, b| b.mtime <=> a.mtime }}.take limit")
-    // }
-
     // TODO: Rocket equivalent trait impl
     // fn to_param(&self) {
     //     self.name
@@ -58,6 +50,17 @@ where
 
     fn mtime(&self) -> SystemTime {
         self.meta.modified().expect("metadata missing mtime")
+    }
+
+    pub fn mtime_human(&self) -> String {
+        let format = format_description!(
+            "[day] [month repr:long] [year], [hour repr:12]:[minute] [period] UTC"
+        );
+        OffsetDateTime::from(self.mtime()).format(&format).unwrap()
+    }
+
+    pub fn mtime_rfc3339(&self) -> String {
+        OffsetDateTime::from(self.mtime()).format(&Rfc3339).unwrap()
     }
 
     fn last_modified() {
@@ -118,6 +121,17 @@ impl Page<NotLoaded> {
             .collect()
     }
 
+    pub(crate) fn recently_modified(limit: usize, basepath: &Path) -> Vec<Page<Loaded>> {
+        let mut pages = Self::all(basepath);
+        pages.sort_by(|a, b| b.mtime().cmp(&a.mtime()));
+        pages
+            .into_iter()
+            .filter_map(|page| page.load().ok())
+            .filter(|page| !page.is_hidden())
+            .take(limit)
+            .collect()
+    }
+
     fn page_files_in(basepath: &Path) -> Vec<PathBuf> {
         Self::page_file_in_inner(basepath).unwrap_or_else(|_err| {
             // TODO: log error
@@ -144,7 +158,6 @@ impl Page<NotLoaded> {
 
     fn last_modified_page(basepath: &Path) -> Option<Page<NotLoaded>> {
         // TODO: this returns mtime
-        // TODO: default basepath to pages relative to app root
         todo!()
     }
 }

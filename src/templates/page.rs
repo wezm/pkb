@@ -1,11 +1,13 @@
 use comrak::plugins::syntect::SyntectAdapter;
 
 use crate::page::{Loaded, Page};
+use crate::settings::Settings;
+use crate::templates::decorators::enhance_markup;
 use crate::{templates, web};
 
 markup::define! {
-    Show<'a>(page: &'a Page<Loaded>, adapter: &'a SyntectAdapter<'a>) {
-        @markup::raw(templates::enhance_markup(&templates::markdown(page.markdown(), adapter)))
+    Show<'a>(page: &'a Page<Loaded>, settings: &'a Settings, adapter: &'a SyntectAdapter<'a>) {
+        @markup::raw(enhance_markup(&templates::markdown(page.markdown(), adapter), settings))
     }
 
     Index<'a>(pages: &'a [Page<Loaded>]) {
