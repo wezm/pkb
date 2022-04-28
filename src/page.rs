@@ -10,7 +10,6 @@ use time::macros::format_description;
 use time::OffsetDateTime;
 use titlecase::titlecase;
 
-const RECENTLY_MODIFIED_LIMIT: usize = 10;
 const YAML_BOUNDARY: &str = "---";
 
 #[derive(Debug)]
@@ -43,11 +42,6 @@ impl<T> Page<T>
 where
     T: Debug,
 {
-    // TODO: Rocket equivalent trait impl
-    // fn to_param(&self) {
-    //     self.name
-    // }
-
     fn mtime(&self) -> SystemTime {
         self.meta.modified().expect("metadata missing mtime")
     }
@@ -56,6 +50,11 @@ where
         let format = format_description!(
             "[day] [month repr:long] [year], [hour repr:12]:[minute] [period] UTC"
         );
+        OffsetDateTime::from(self.mtime()).format(&format).unwrap()
+    }
+
+    pub fn mtime_date(&self) -> String {
+        let format = format_description!("[day] [month repr:long] [year]");
         OffsetDateTime::from(self.mtime()).format(&format).unwrap()
     }
 

@@ -48,11 +48,13 @@ fn process_custom_elements(doc: &NodeRef, basepath: &Path) {
 
 struct RecentlyChangedList;
 
+const RECENTLY_MODIFIED_LIMIT: usize = 5;
+
 impl RecentlyChangedList {
     fn process(doc: &NodeRef, basepath: &Path) {
         for elem in doc.select("recently-changed-list").unwrap() {
             let list = NodeRef::new_element(el_name("ul"), []);
-            for page in Page::recently_modified(5, basepath) {
+            for page in Page::recently_modified(RECENTLY_MODIFIED_LIMIT, basepath) {
                 let li = NodeRef::new_element(el_name("li"), []);
                 let link = NodeRef::new_element(
                     el_name("a"),
