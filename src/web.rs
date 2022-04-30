@@ -20,7 +20,13 @@ use time::OffsetDateTime;
 use crate::settings::Settings;
 use crate::{web, PkbError};
 
-type CachedHtml = CacheControl<LastModified<RawHtml<String>>>;
+#[derive(Responder)]
+pub(crate) enum CachedHtml {
+    #[response(status = 304)]
+    NotModified(()),
+    #[response(content_type = "html")]
+    Html(CacheControl<LastModified<String>>),
+}
 
 pub fn rocket() -> Rocket<Build> {
     let adapter = Arc::new(SyntectAdapter::new("base16-ocean.dark"));
@@ -140,6 +146,14 @@ impl<'r> FromRequest<'r> for StartTime {
             RequestTimer(Some(time)) => Outcome::Success(StartTime(time)),
             RequestTimer(None) => Outcome::Failure((Status::InternalServerError, ())),
         }
+    }
+}
+
+const CACHE_TIME: Duration = Duration::from_secs(60);
+
+impl CachedHtml {
+    fn html(last_modified: SystemTime, content: String) -> Self {
+        CachedHtml::Html(expires_in(CACHE_TIME, fresh_when(last_modified, content)))
     }
 }
 

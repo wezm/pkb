@@ -1,5 +1,4 @@
 use std::sync::Arc;
-use std::time::Duration;
 
 use comrak::plugins::syntect::SyntectAdapter;
 use rocket::request::FlashMessage;
@@ -9,8 +8,8 @@ use crate::page::Page;
 use crate::settings::Settings;
 use crate::templates::page::{Index, Show};
 use crate::templates::{Layout, Nil};
-use crate::web::{expires_in, fresh_when, CachedHtml};
-use crate::{html, PkbError};
+use crate::web::CachedHtml;
+use crate::PkbError;
 
 pub fn routes() -> Vec<Route> {
     routes![index, show]
@@ -37,9 +36,9 @@ pub(crate) fn show<'r>(
             adapter: &*adapter,
         },
     };
-    Ok(expires_in(
-        Duration::from_secs(60),
-        fresh_when(page.last_modified(&settings.pages_path), html(content)),
+    Ok(CachedHtml::html(
+        page.last_modified(&settings.pages_path),
+        content.to_string(),
     ))
 }
 
@@ -63,8 +62,8 @@ pub(crate) fn index<'r>(
         head: Nil {},
         body: Index { pages: &pages },
     };
-    Ok(expires_in(
-        Duration::from_secs(60),
-        fresh_when(Page::last_modified_page(&settings.pages_path), html(page)),
+    Ok(CachedHtml::html(
+        Page::last_modified_page(&settings.pages_path),
+        page.to_string(),
     ))
 }
