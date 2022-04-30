@@ -11,10 +11,11 @@ use crate::string_ext::StringExt;
 
 // Enhance the HTML
 pub fn enhance_markup(html: &str, settings: &Settings) -> String {
-    let mut doc = parse_html().one(html);
+    let doc = parse_html().one(html);
 
-    link_headings(&mut doc);
-    process_custom_elements(&mut doc, &settings.pages_path);
+    link_headings(&doc);
+    process_custom_elements(&doc, &settings.pages_path);
+    trim_pre_whitespace(&doc);
 
     doc.to_string()
 }
@@ -44,6 +45,19 @@ fn link_headings(doc: &NodeRef) {
 
 fn process_custom_elements(doc: &NodeRef, basepath: &Path) {
     RecentlyChangedList::process(doc, basepath);
+}
+
+fn trim_pre_whitespace(doc: &NodeRef) {
+    for code in doc.select("pre code").unwrap() {
+        let mut next_node = code.as_node().first_child();
+        while let Some(ref node) = next_node {
+            let tmp_next = node.next_sibling();
+            if node.as_text().is_some() {
+                node.detach();
+            }
+            next_node = tmp_next;
+        }
+    }
 }
 
 struct RecentlyChangedList;
