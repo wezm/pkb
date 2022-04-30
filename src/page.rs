@@ -6,6 +6,7 @@ use std::{fs, io};
 
 use serde::Deserialize;
 use time::format_description::well_known::Rfc3339;
+use time::format_description::FormatItem;
 use time::macros::format_description;
 use time::OffsetDateTime;
 use titlecase::titlecase;
@@ -38,6 +39,10 @@ struct Metadata {
     hidden: bool,
 }
 
+const MTIME_DATE_FORMAT: &[FormatItem] = format_description!("[day] [month repr:long] [year]");
+const MTIME_HUMAN_FORMAT: &[FormatItem] =
+    format_description!("[day] [month repr:long] [year], [hour repr:12]:[minute] [period] UTC");
+
 impl<T> Page<T>
 where
     T: Debug,
@@ -47,15 +52,15 @@ where
     }
 
     pub fn mtime_human(&self) -> String {
-        let format = format_description!(
-            "[day] [month repr:long] [year], [hour repr:12]:[minute] [period] UTC"
-        );
-        OffsetDateTime::from(self.mtime()).format(&format).unwrap()
+        OffsetDateTime::from(self.mtime())
+            .format(MTIME_HUMAN_FORMAT)
+            .unwrap()
     }
 
     pub fn mtime_date(&self) -> String {
-        let format = format_description!("[day] [month repr:long] [year]");
-        OffsetDateTime::from(self.mtime()).format(&format).unwrap()
+        OffsetDateTime::from(self.mtime())
+            .format(MTIME_DATE_FORMAT)
+            .unwrap()
     }
 
     pub fn mtime_rfc3339(&self) -> String {

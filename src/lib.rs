@@ -56,3 +56,12 @@ impl<'r> Responder<'r, 'static> for PkbError {
         }
     }
 }
+
+#[macro_export]
+macro_rules! return_if_fresh {
+    ($since:ident, $exp:expr) => {
+        if let Some(not_modified) = $since.map_or(None, |since| since.is_fresh($exp)) {
+            return Ok(not_modified);
+        }
+    };
+}

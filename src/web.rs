@@ -1,6 +1,7 @@
 pub(crate) mod page;
 pub(crate) mod tag;
 
+use std::convert::Infallible;
 use std::sync::Arc;
 use std::time::{Duration, Instant, SystemTime};
 
@@ -14,8 +15,9 @@ use rocket::response::Responder;
 use rocket::{Build, Data, Request, Response, Rocket};
 use rocket::{Catcher, State};
 use sentry::types::Dsn;
+use time::format_description::FormatItem;
 use time::macros::format_description;
-use time::OffsetDateTime;
+use time::{OffsetDateTime, PrimitiveDateTime};
 
 use crate::settings::Settings;
 use crate::{web, PkbError};
@@ -23,10 +25,12 @@ use crate::{web, PkbError};
 #[derive(Responder)]
 pub(crate) enum CachedHtml {
     #[response(status = 304)]
-    NotModified(()),
+    NotModified(CacheControl<LastModified<()>>),
     #[response(content_type = "html")]
     Html(CacheControl<LastModified<String>>),
 }
+
+pub(crate) struct IfModifiedSince(OffsetDateTime);
 
 pub fn rocket() -> Rocket<Build> {
     let adapter = Arc::new(SyntectAdapter::new("base16-ocean.dark"));
@@ -52,8 +56,9 @@ pub(crate) fn home<'r>(
     settings: &State<Settings>,
     flash: Option<FlashMessage<'r>>,
     adapter: &State<Arc<SyntectAdapter<'_>>>,
+    if_modified_since: Option<IfModifiedSince>,
 ) -> Result<CachedHtml, PkbError> {
-    web::page::show("home", settings, flash, adapter)
+    web::page::show("home", settings, flash, adapter, if_modified_since)
 }
 
 #[catch(404)]
@@ -155,6 +160,10 @@ impl CachedHtml {
     fn html(last_modified: SystemTime, content: String) -> Self {
         CachedHtml::Html(expires_in(CACHE_TIME, fresh_when(last_modified, content)))
     }
+
+    fn not_modified(last_modified: SystemTime) -> Self {
+        CachedHtml::NotModified(expires_in(CACHE_TIME, fresh_when(last_modified, ())))
+    }
 }
 
 #[derive(Responder)]
@@ -195,20 +204,45 @@ fn expires_in<'r, 'o: 'r, R: Responder<'r, 'o>>(
     }
 }
 
+// Last-Modified: <day-name>, <day> <month> <year> <hour>:<minute>:<second> GMT
+const HTTP_DATE: &[FormatItem] = format_description!(
+    "[weekday repr:short], [day] [month repr:short] [year] [hour repr:24]:[minute]:[second] GMT"
+);
+
 fn fresh_when<'r, 'o: 'r, R: Responder<'r, 'o>>(
     modified: SystemTime,
     responder: R,
 ) -> LastModified<R> {
-    // Set Last-Modified header to the modification time
-    // TODO: Also need endpoints to handle If-Modified-Since and return 304 Not Modified if the time is the same
-    // Last-Modified: <day-name>, <day> <month> <year> <hour>:<minute>:<second> GMT
-    let format = format_description!(
-            "[weekday repr:short], [day] [month repr:short] [year] [hour repr:24]:[minute]:[second] GMT"
-        );
-    let value = OffsetDateTime::from(modified).format(format).unwrap();
+    let value = OffsetDateTime::from(modified).format(HTTP_DATE).unwrap();
     let last_modified = Header::new(rocket::http::hyper::header::LAST_MODIFIED.as_str(), value);
     LastModified {
         inner: responder,
         last_modified,
+    }
+}
+
+impl IfModifiedSince {
+    /// Returns a not modified response if fresh, None otherwise
+    fn is_fresh(&self, last_modified: SystemTime) -> Option<CachedHtml> {
+        (OffsetDateTime::from(last_modified) <= self.0)
+            .then(|| CachedHtml::not_modified(last_modified))
+    }
+}
+
+#[rocket::async_trait]
+impl<'r> FromRequest<'r> for IfModifiedSince {
+    type Error = Infallible;
+
+    async fn from_request(req: &'r Request<'_>) -> Outcome<Self, Self::Error> {
+        match req.headers().get_one("if-modified-since") {
+            Some(timestamp) if timestamp.ends_with(" GMT") => {
+                PrimitiveDateTime::parse(timestamp, HTTP_DATE)
+                    .map(|last_modified| {
+                        Outcome::Success(IfModifiedSince(last_modified.assume_utc()))
+                    })
+                    .unwrap_or_else(|_| Outcome::Forward(()))
+            }
+            Some(_) | None => Outcome::Forward(()),
+        }
     }
 }

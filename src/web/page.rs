@@ -8,8 +8,8 @@ use crate::page::Page;
 use crate::settings::Settings;
 use crate::templates::page::{Index, Show};
 use crate::templates::{Layout, Nil};
-use crate::web::CachedHtml;
-use crate::PkbError;
+use crate::web::{CachedHtml, IfModifiedSince};
+use crate::{return_if_fresh, PkbError};
 
 pub fn routes() -> Vec<Route> {
     routes![index, show]
@@ -21,10 +21,13 @@ pub(crate) fn show<'r>(
     settings: &State<Settings>,
     flash: Option<FlashMessage<'r>>,
     adapter: &State<Arc<SyntectAdapter<'_>>>,
+    modified_since: Option<IfModifiedSince>,
 ) -> Result<CachedHtml, PkbError> {
     let page = Page::new(name, &settings.pages_path)
         .ok_or(PkbError::PageNotFound)?
         .load()?;
+    return_if_fresh!(modified_since, page.last_modified(&settings.pages_path));
+
     let content = Layout {
         settings,
         title: &page.title(),
@@ -46,8 +49,14 @@ pub(crate) fn show<'r>(
 pub(crate) fn index<'r>(
     settings: &State<Settings>,
     flash: Option<FlashMessage<'r>>,
+    modified_since: Option<IfModifiedSince>,
 ) -> Result<CachedHtml, PkbError> {
     let mut pages = Page::all(&settings.pages_path);
+    return_if_fresh!(
+        modified_since,
+        Page::last_modified_page(&settings.pages_path)
+    );
+
     pages.sort_by(|a, b| a.name.cmp(&b.name));
     let pages = pages
         .into_iter()
