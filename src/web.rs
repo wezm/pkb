@@ -158,11 +158,17 @@ const CACHE_TIME: Duration = Duration::from_secs(60);
 
 impl CachedHtml {
     fn html(last_modified: SystemTime, content: String) -> Self {
-        CachedHtml::Html(expires_in(CACHE_TIME, fresh_when(last_modified, content)))
+        CachedHtml::Html(expires_in(
+            CACHE_TIME,
+            fresh_when(last_modified.max(crate::BUILD_DATE.into()), content),
+        ))
     }
 
     fn not_modified(last_modified: SystemTime) -> Self {
-        CachedHtml::NotModified(expires_in(CACHE_TIME, fresh_when(last_modified, ())))
+        CachedHtml::NotModified(expires_in(
+            CACHE_TIME,
+            fresh_when(last_modified.max(crate::BUILD_DATE.into()), ()),
+        ))
     }
 }
 
