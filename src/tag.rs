@@ -1,6 +1,7 @@
 use std::collections::BTreeMap;
 use std::path::Path;
 use std::rc::Rc;
+use std::time::SystemTime;
 
 use crate::page::{Loaded, Page};
 
@@ -63,5 +64,13 @@ impl Tag {
         let mut sorted = self.pages.clone();
         sorted.sort_by(|a, b| a.name.cmp(&b.name));
         sorted
+    }
+
+    pub fn last_modified(&self) -> SystemTime {
+        self.pages
+            .iter()
+            .map(|page| page.mtime())
+            .max()
+            .unwrap_or_else(|| SystemTime::now())
     }
 }

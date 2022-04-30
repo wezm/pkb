@@ -42,7 +42,7 @@ impl<T> Page<T>
 where
     T: Debug,
 {
-    fn mtime(&self) -> SystemTime {
+    pub fn mtime(&self) -> SystemTime {
         self.meta.modified().expect("metadata missing mtime")
     }
 
@@ -62,15 +62,14 @@ where
         OffsetDateTime::from(self.mtime()).format(&Rfc3339).unwrap()
     }
 
-    fn last_modified() {
-        // if name == 'home'
-        //   # Home page lists recently changed files, so is modified whenever any
-        //   # other page is modified.
-        //   Page.last_modified
-        // else
-        //   mtime
-        // end
-        todo!()
+    pub fn last_modified(&self, basepath: &Path) -> SystemTime {
+        if self.name == "home" {
+            // Home page lists recently changed files, so is modified whenever any
+            // other page is modified.
+            Page::last_modified_page(basepath)
+        } else {
+            self.mtime()
+        }
     }
 
     fn is_empty(&self) -> bool {
@@ -155,9 +154,12 @@ impl Page<NotLoaded> {
         Page::new("home", basepath)
     }
 
-    fn last_modified_page(basepath: &Path) -> Option<Page<NotLoaded>> {
-        // TODO: this returns mtime
-        todo!()
+    pub fn last_modified_page(basepath: &Path) -> SystemTime {
+        Page::all(basepath)
+            .iter()
+            .map(|page| page.mtime())
+            .max()
+            .unwrap_or_else(|| SystemTime::now())
     }
 }
 

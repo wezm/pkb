@@ -2,20 +2,25 @@ pub(crate) mod page;
 pub(crate) mod tag;
 
 use std::sync::Arc;
-use std::time::Instant;
+use std::time::{Duration, Instant, SystemTime};
 
 use comrak::plugins::syntect::SyntectAdapter;
 use rocket::fairing::{self, AdHoc, Fairing, Info, Kind};
 use rocket::fs::FileServer;
-use rocket::http::Status;
+use rocket::http::{Header, Status};
 use rocket::request::{FlashMessage, FromRequest, Outcome};
 use rocket::response::content::RawHtml;
+use rocket::response::Responder;
 use rocket::{Build, Data, Request, Response, Rocket};
 use rocket::{Catcher, State};
 use sentry::types::Dsn;
+use time::macros::format_description;
+use time::OffsetDateTime;
 
 use crate::settings::Settings;
 use crate::{web, PkbError};
+
+type CachedHtml = CacheControl<LastModified<RawHtml<String>>>;
 
 pub fn rocket() -> Rocket<Build> {
     let adapter = Arc::new(SyntectAdapter::new("base16-ocean.dark"));
@@ -41,7 +46,7 @@ pub(crate) fn home<'r>(
     settings: &State<Settings>,
     flash: Option<FlashMessage<'r>>,
     adapter: &State<Arc<SyntectAdapter<'_>>>,
-) -> Result<RawHtml<String>, PkbError> {
+) -> Result<CachedHtml, PkbError> {
     web::page::show("home", settings, flash, adapter)
 }
 
@@ -135,5 +140,61 @@ impl<'r> FromRequest<'r> for StartTime {
             RequestTimer(Some(time)) => Outcome::Success(StartTime(time)),
             RequestTimer(None) => Outcome::Failure((Status::InternalServerError, ())),
         }
+    }
+}
+
+#[derive(Responder)]
+pub(crate) struct CacheControl<R> {
+    inner: R,
+    cache_control: Header<'static>,
+}
+
+#[derive(Responder)]
+pub(crate) struct LastModified<R> {
+    inner: R,
+    last_modified: Header<'static>,
+}
+
+fn cache_in_varnish<'r, 'o: 'r, R: Responder<'r, 'o>>(
+    duration: Duration,
+    responder: R,
+) -> CacheControl<R> {
+    let value = format!("s-maxage={}, public", duration.as_secs());
+    let cache_control = Header::new(rocket::http::hyper::header::CACHE_CONTROL.as_str(), value);
+
+    CacheControl {
+        inner: responder,
+        cache_control,
+    }
+}
+
+fn expires_in<'r, 'o: 'r, R: Responder<'r, 'o>>(
+    duration: Duration,
+    responder: R,
+) -> CacheControl<R> {
+    let value = format!("max-age={}, public", duration.as_secs());
+    let cache_control = Header::new(rocket::http::hyper::header::CACHE_CONTROL.as_str(), value);
+
+    CacheControl {
+        inner: responder,
+        cache_control,
+    }
+}
+
+fn fresh_when<'r, 'o: 'r, R: Responder<'r, 'o>>(
+    modified: SystemTime,
+    responder: R,
+) -> LastModified<R> {
+    // Set Last-Modified header to the modification time
+    // TODO: Also need endpoints to handle If-Modified-Since and return 304 Not Modified if the time is the same
+    // Last-Modified: <day-name>, <day> <month> <year> <hour>:<minute>:<second> GMT
+    let format = format_description!(
+            "[weekday repr:short], [day] [month repr:short] [year] [hour repr:24]:[minute]:[second] GMT"
+        );
+    let value = OffsetDateTime::from(modified).format(format).unwrap();
+    let last_modified = Header::new(rocket::http::hyper::header::LAST_MODIFIED.as_str(), value);
+    LastModified {
+        inner: responder,
+        last_modified,
     }
 }

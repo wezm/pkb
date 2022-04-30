@@ -1,11 +1,14 @@
+use std::time::Duration;
+
 use rocket::request::FlashMessage;
-use rocket::response::content::RawHtml;
 use rocket::{Route, State};
 
+use crate::page::Page;
 use crate::settings::Settings;
 use crate::tag::Tag;
 use crate::templates::tag::{Index, Show};
 use crate::templates::{Layout, Nil};
+use crate::web::{expires_in, fresh_when, CachedHtml};
 use crate::{html, PkbError};
 
 pub fn routes() -> Vec<Route> {
@@ -17,7 +20,7 @@ pub(crate) fn show<'r>(
     name: &'r str,
     settings: &State<Settings>,
     flash: Option<FlashMessage<'r>>,
-) -> Result<RawHtml<String>, PkbError> {
+) -> Result<CachedHtml, PkbError> {
     let tag = Tag::find(name, &settings.pages_path).ok_or(PkbError::PageNotFound)?;
 
     let page = Layout {
@@ -27,14 +30,17 @@ pub(crate) fn show<'r>(
         head: Nil {},
         body: Show { tag: &tag },
     };
-    Ok(html(page))
+    Ok(expires_in(
+        Duration::from_secs(60),
+        fresh_when(tag.last_modified(), html(page)),
+    ))
 }
 
 #[get("/tags")]
 pub(crate) fn index<'r>(
     settings: &State<Settings>,
     flash: Option<FlashMessage<'r>>,
-) -> Result<RawHtml<String>, PkbError> {
+) -> Result<CachedHtml, PkbError> {
     let tags = Tag::all(&settings.pages_path);
 
     let page = Layout {
@@ -44,5 +50,8 @@ pub(crate) fn index<'r>(
         head: Nil {},
         body: Index { tags: &tags },
     };
-    Ok(html(page))
+    Ok(expires_in(
+        Duration::from_secs(60),
+        fresh_when(Page::last_modified_page(&settings.pages_path), html(page)),
+    ))
 }
