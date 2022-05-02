@@ -20,7 +20,6 @@ pub struct NotLoaded;
 pub struct Loaded {
     metadata: Metadata,
     content: String,
-    markdown: Option<String>,
 }
 
 #[derive(Debug)]
@@ -78,19 +77,14 @@ where
     }
 
     fn is_empty(&self) -> bool {
-        // todo!("path.size.zeor? || metadata._is_empty()")
-        self.meta.len() == 0 // || self.metadata().is_empty()
+        self.meta.len() == 0
     }
 
     pub(crate) fn load(self) -> io::Result<Page<Loaded>> {
         let content = fs::read_to_string(&self.path)?;
         let metadata = metadata(&content)?;
 
-        let loaded = Loaded {
-            content,
-            metadata,
-            markdown: None, // TODO
-        };
+        let loaded = Loaded { content, metadata };
         Ok(Page {
             name: self.name,
             path: self.path,
@@ -202,12 +196,6 @@ impl Page<Loaded> {
 
     fn content(&self) -> &str {
         &self.content.content
-    }
-}
-
-impl Metadata {
-    fn is_empty(&self) -> bool {
-        self.title.is_none() && self.tags.is_empty() && self.hidden == false
     }
 }
 

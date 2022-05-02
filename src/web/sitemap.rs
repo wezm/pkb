@@ -10,7 +10,7 @@ use time::{OffsetDateTime, Time};
 
 use crate::settings::Settings;
 use crate::tag::Tag;
-use crate::web::{self, cache_in_varnish, CacheControl, IfModifiedSince};
+use crate::web::{self, cache_in_varnish, CacheControl};
 
 const ONE_DAY: Duration = Duration::from_secs(24 * 60 * 60);
 

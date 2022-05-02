@@ -10,7 +10,7 @@ use comrak::plugins::syntect::SyntectAdapter;
 use rocket::fairing::{self, AdHoc, Fairing, Info, Kind};
 use rocket::fs::FileServer;
 use rocket::http::{Header, Status};
-use rocket::request::{FlashMessage, FromRequest, Outcome};
+use rocket::request::{FromRequest, Outcome};
 use rocket::response::content::RawHtml;
 use rocket::response::Responder;
 use rocket::{Build, Data, Request, Response, Rocket};
@@ -21,7 +21,7 @@ use time::macros::format_description;
 use time::{OffsetDateTime, PrimitiveDateTime};
 
 use crate::settings::Settings;
-use crate::{web, PkbError};
+use crate::PkbError;
 
 #[derive(Responder)]
 pub(crate) enum CachedHtml {
@@ -55,11 +55,10 @@ pub fn catchers() -> Vec<Catcher> {
 #[get("/")]
 pub(crate) fn home<'r>(
     settings: &State<Settings>,
-    flash: Option<FlashMessage<'r>>,
     adapter: &State<Arc<SyntectAdapter<'_>>>,
     if_modified_since: Option<IfModifiedSince>,
 ) -> Result<CachedHtml, PkbError> {
-    web::page::show("home", settings, flash, adapter, if_modified_since)
+    page::show("home", settings, adapter, if_modified_since)
 }
 
 #[catch(404)]

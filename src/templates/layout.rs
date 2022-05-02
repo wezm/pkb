@@ -1,13 +1,12 @@
 use std::ops::RangeInclusive;
 
-use rocket::request::FlashMessage;
 use time::OffsetDateTime;
 
 use crate::settings::Settings;
 use crate::web;
 
 markup::define! {
-    Layout<'a, Head: markup::Render, Body: markup::Render>(title: &'a str, head: Head, body: Body, settings: &'a Settings, flash: Option<&'a FlashMessage<'a>>) {
+    Layout<'a, Head: markup::Render, Body: markup::Render>(title: &'a str, head: Head, body: Body, settings: &'a Settings) {
         @markup::doctype()
 
         html[lang="en"] {

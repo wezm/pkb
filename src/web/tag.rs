@@ -1,4 +1,3 @@
-use rocket::request::FlashMessage;
 use rocket::{Route, State};
 
 use crate::page::Page;
@@ -17,7 +16,6 @@ pub fn routes() -> Vec<Route> {
 pub(crate) fn show<'r>(
     name: &'r str,
     settings: &State<Settings>,
-    flash: Option<FlashMessage<'r>>,
     modified_since: Option<IfModifiedSince>,
 ) -> Result<CachedHtml, PkbError> {
     let tag = Tag::find(name, &settings.pages_path).ok_or(PkbError::PageNotFound)?;
@@ -26,7 +24,6 @@ pub(crate) fn show<'r>(
     let page = Layout {
         settings,
         title: "Tags",
-        flash: flash.as_ref(),
         head: Nil {},
         body: Show { tag: &tag },
     };
@@ -36,7 +33,6 @@ pub(crate) fn show<'r>(
 #[get("/tags")]
 pub(crate) fn index<'r>(
     settings: &State<Settings>,
-    flash: Option<FlashMessage<'r>>,
     modified_since: Option<IfModifiedSince>,
 ) -> Result<CachedHtml, PkbError> {
     let tags = Tag::all(&settings.pages_path);
@@ -48,7 +44,6 @@ pub(crate) fn index<'r>(
     let page = Layout {
         settings,
         title: "Tags",
-        flash: flash.as_ref(),
         head: Nil {},
         body: Index { tags: &tags },
     };
