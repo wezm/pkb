@@ -147,7 +147,6 @@ fn el_name(name: &str) -> QualName {
 
 fn parse_markup(html: &str) -> NodeRef {
     let ctx_name = QualName::new(None, ns!(html), local_name!("div"));
-    info!("{}", html);
     parse_fragment(ctx_name.clone(), vec![]).one(html)
 }
 
