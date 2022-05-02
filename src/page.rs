@@ -155,7 +155,7 @@ impl Page<NotLoaded> {
         Ok(pages)
     }
 
-    fn home(basepath: &Path) -> Option<Page<NotLoaded>> {
+    pub(crate) fn home(basepath: &Path) -> Option<Page<NotLoaded>> {
         Page::new("home", basepath)
     }
 

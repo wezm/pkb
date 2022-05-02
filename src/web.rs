@@ -1,4 +1,5 @@
 pub(crate) mod page;
+mod sitemap;
 pub(crate) mod tag;
 
 use std::convert::Infallible;
@@ -38,7 +39,7 @@ pub fn rocket() -> Rocket<Build> {
     rocket::build()
         .attach(RequestTimer(None))
         .manage(adapter)
-        .mount("/", routes![home])
+        .mount("/", routes![home, sitemap::show])
         .mount("/", page::routes())
         .mount("/", tag::routes())
         .attach(AdHoc::config::<Settings>())
