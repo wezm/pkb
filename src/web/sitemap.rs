@@ -1,16 +1,18 @@
-use crate::page::Page;
+use std::time::{Duration, SystemTime};
+
 use rocket::http::uri::Origin;
 use rocket::response::content::RawXml;
 use rocket::response::Debug;
 use rocket::State;
 use sitemap::structs::{ChangeFreq, LastMod, Location, Priority, UrlEntry};
 use sitemap::writer::SiteMapWriter;
-use std::time::{Duration, SystemTime};
-use time::{OffsetDateTime, Time};
+use time::OffsetDateTime;
 
+use crate::page::Page;
 use crate::settings::Settings;
 use crate::tag::Tag;
 use crate::web::{self, cache_in_varnish, CacheControl};
+use crate::OffsetDateTimeExt;
 
 const ONE_DAY: Duration = Duration::from_secs(24 * 60 * 60);
 
@@ -109,10 +111,6 @@ impl<'settings> EntryFactory<'settings> {
     }
 
     fn last_mod(&self, last_modified: SystemTime) -> LastMod {
-        let date = OffsetDateTime::from(last_modified);
-        // Drop fractional seconds
-        LastMod::DateTime(
-            date.replace_time(Time::from_hms(date.hour(), date.minute(), date.second()).unwrap()),
-        )
+        LastMod::DateTime(OffsetDateTime::from(last_modified).truncate_seconds())
     }
 }

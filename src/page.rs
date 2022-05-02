@@ -11,6 +11,8 @@ use time::macros::format_description;
 use time::OffsetDateTime;
 use titlecase::titlecase;
 
+use crate::OffsetDateTimeExt;
+
 const YAML_BOUNDARY: &str = "---";
 
 #[derive(Debug)]
@@ -63,7 +65,10 @@ where
     }
 
     pub fn mtime_rfc3339(&self) -> String {
-        OffsetDateTime::from(self.mtime()).format(&Rfc3339).unwrap()
+        OffsetDateTime::from(self.mtime())
+            .truncate_seconds()
+            .format(&Rfc3339)
+            .unwrap()
     }
 
     pub fn last_modified(&self, basepath: &Path) -> SystemTime {

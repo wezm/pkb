@@ -7,6 +7,7 @@ use rocket::http::Status;
 use rocket::response::{content, Responder};
 use rocket::Request;
 use std::{fmt, io};
+use time::{OffsetDateTime, Time};
 
 mod page;
 mod settings;
@@ -22,6 +23,16 @@ pub enum PkbError {
     Io(io::Error),
     /// Page is invalid or not found
     PageNotFound,
+}
+
+pub trait OffsetDateTimeExt {
+    fn truncate_seconds(self) -> OffsetDateTime;
+}
+
+impl OffsetDateTimeExt for OffsetDateTime {
+    fn truncate_seconds(self) -> OffsetDateTime {
+        self.replace_time(Time::from_hms(self.hour(), self.minute(), self.second()).unwrap())
+    }
 }
 
 impl From<io::Error> for PkbError {

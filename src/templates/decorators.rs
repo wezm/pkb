@@ -113,3 +113,30 @@ fn attr(name: &str, value: String) -> (ExpandedName, Attribute) {
 fn el_name(name: &str) -> QualName {
     QualName::new(None, ns!(html), LocalName::from(name))
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use regex::Regex;
+    use std::path::PathBuf;
+
+    const HTML: &str =
+        "<html><body><h1>Test</h1><recently-changed-list></recently-changed-list></body></html>";
+
+    fn pages_path() -> PathBuf {
+        let mut path = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        path.extend(&["tests", "fixtures", "pages"]);
+        path
+    }
+
+    #[test]
+    fn recently_changed_list() {
+        // Test that it replaces the custom element with a list of pages
+        let doc = parse_html().one(HTML);
+        RecentlyChangedList::process(&doc, &pages_path());
+
+        let processed = doc.to_string();
+        let regex = Regex::new(r#"<ul>(<li><a href="/[^"]+">[^<]+</a><span class="smaller-font lighten"> updated <abbr title="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z">[^<]+</abbr></span></li>)+</ul>"#).unwrap();
+        assert!(regex.is_match(&processed));
+    }
+}

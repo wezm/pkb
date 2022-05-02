@@ -22,5 +22,10 @@ titlecase = "1.1"
 [build-dependencies]
 time = { version = "0.3.5", features = [] } # version should match above
 
+[dev-dependencies.regex]
+version = "1.5"
+default-features = false
+features = ["std"]
+
 [patch.crates-io]
 rocket = { git = "https://github.com/SergioBenitez/Rocket.git", rev = "66d18bf" }
