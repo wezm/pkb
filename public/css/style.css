@@ -1,0 +1,209 @@
+body {
+  margin: 40px auto;
+  max-width: 650px;
+  line-height: 1.6;
+  font-size: 18px;
+  font-family: "Manrope VF", sans-serif;
+  color: #424242;
+  padding: 0 10px;
+  font-variant-numeric: lining-nums;
+}
+
+a {
+  color: #265C83;
+}
+
+a:link,
+a:visited {
+  color: #265C83;
+}
+
+a:hover {
+  color: #4692c9;
+}
+
+a:active {
+  color: #007BE6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.2;
+  color: #292929;
+  position: relative;
+}
+
+h1 a,
+h1 a:link,
+h1 a:visited,
+h1 a:hover,
+h1 a:active, h2 a,
+h2 a:link,
+h2 a:visited,
+h2 a:hover,
+h2 a:active, h3 a,
+h3 a:link,
+h3 a:visited,
+h3 a:hover,
+h3 a:active, h4 a,
+h4 a:link,
+h4 a:visited,
+h4 a:hover,
+h4 a:active, h5 a,
+h5 a:link,
+h5 a:visited,
+h5 a:hover,
+h5 a:active, h6 a,
+h6 a:link,
+h6 a:visited,
+h6 a:hover,
+h6 a:active {
+  color: inherit;
+}
+
+h1 .anchor, h2 .anchor, h3 .anchor, h4 .anchor, h5 .anchor, h6 .anchor {
+  width: 1em;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+h1 .anchor .link-icon, h2 .anchor .link-icon, h3 .anchor .link-icon, h4 .anchor .link-icon, h5 .anchor .link-icon, h6 .anchor .link-icon {
+  display: none;
+  color: #c2c2c2;
+  font-weight: normal;
+}
+
+h1:hover .anchor, h2:hover .anchor, h3:hover .anchor, h4:hover .anchor, h5:hover .anchor, h6:hover .anchor {
+  margin-left: -1.25em;
+  padding-left: 0.5em;
+}
+
+h1:hover .anchor .link-icon, h2:hover .anchor .link-icon, h3:hover .anchor .link-icon, h4:hover .anchor .link-icon, h5:hover .anchor .link-icon, h6:hover .anchor .link-icon {
+  display: inline-block;
+}
+
+h1 {
+  font-size: 3rem;
+}
+
+pre {
+  overflow-x: auto;
+  margin-bottom: 1em;
+  line-height: 1;
+  padding: 5px 10px 10px;
+  border-radius: 3px;
+}
+
+code {
+  font-family: PragmataPro, Consolas, "Source Code Pro", Menlo, monospace;
+  font-size: 0.8rem;
+}
+
+header strong {
+  font-size: 2rem;
+  position: static;
+  display: block;
+  line-height: 1.2;
+}
+
+header strong a,
+header strong a:link,
+header strong a:visited,
+header strong a:hover,
+header strong a:active {
+  color: #292929;
+}
+
+article p {
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  hyphens: auto;
+}
+
+.list-flat {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.list-flat li {
+  display: inline;
+}
+
+.list-spaced-left li {
+  margin-left: 1rem;
+}
+
+.list-spaced-right li {
+  margin-right: 1rem;
+}
+
+.no-decoration {
+  text-decoration: none;
+}
+
+.no-margin {
+  margin: 0;
+}
+
+.no-margin-top {
+  margin-top: 0;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.right {
+  float: right;
+}
+
+.clearfix:after {
+  clear: both;
+  content: ".";
+  display: block;
+  font-size: 0;
+  line-height: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.top-gap {
+  margin-top: 10vh;
+}
+
+.top-gap-double-em {
+  margin-top: 2em;
+}
+
+.bottom-gap {
+  margin-bottom: 10vh;
+}
+
+.smaller-font {
+  font-size: smaller;
+}
+
+.lighten {
+  color: #5c5c5c;
+}
+
+.badge {
+  font-weight: bold;
+  background-color: #dbdbdb;
+  padding: 0 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  display: inline-block;
+  vertical-align: text-top;
+}
+
+.monospace {
+  font-family: PragmataPro, Consolas, "Source Code Pro", Menlo, monospace;
+}
+
+.shaded-panel {
+  background-color: whitesmoke;
+  padding: 0.5em;
+  border-radius: 1px;
+}
