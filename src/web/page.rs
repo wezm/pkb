@@ -1,6 +1,7 @@
 use std::sync::Arc;
 
 use comrak::plugins::syntect::SyntectAdapter;
+use rocket::fs::FileName;
 use rocket::{Route, State};
 
 use crate::page::Page;
@@ -21,7 +22,7 @@ pub(crate) fn show<'r>(
     adapter: &State<Arc<SyntectAdapter<'_>>>,
     modified_since: Option<IfModifiedSince>,
 ) -> Result<CachedHtml, PkbError> {
-    let page = Page::new(name, &settings.pages_path)
+    let page = Page::new(FileName::new(name), &settings.pages_path)
         .ok_or(PkbError::PageNotFound)?
         .load()?;
     return_if_fresh!(modified_since, page.last_modified(&settings.pages_path));

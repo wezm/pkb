@@ -4,6 +4,7 @@ use std::path::{Path, PathBuf};
 use std::time::SystemTime;
 use std::{fs, io};
 
+use rocket::fs::FileName;
 use serde::Deserialize;
 use time::format_description::well_known::Rfc3339;
 use time::format_description::FormatItem;
@@ -100,7 +101,8 @@ where
 }
 
 impl Page<NotLoaded> {
-    pub(crate) fn new(name: &str, basepath: &Path) -> Option<Page<NotLoaded>> {
+    pub(crate) fn new(name: &FileName, basepath: &Path) -> Option<Page<NotLoaded>> {
+        let name = name.as_str()?;
         let path = basepath.join(name).with_extension("md");
         let meta = fs::metadata(&path).ok()?;
         meta.is_file().then(|| Page {
@@ -117,7 +119,7 @@ impl Page<NotLoaded> {
             .filter_map(|path| {
                 path.file_stem()
                     .and_then(|stem| stem.to_str())
-                    .and_then(|name| Page::new(name, basepath)) // TODO: Log error to create page?
+                    .and_then(|name| Page::new(FileName::new(name), basepath)) // TODO: Log error to create page?
             })
             .filter(|page| !page.is_empty() /*|| page.is_hidden()*/)
             .collect()
@@ -155,7 +157,7 @@ impl Page<NotLoaded> {
     }
 
     pub(crate) fn home(basepath: &Path) -> Option<Page<NotLoaded>> {
-        Page::new("home", basepath)
+        Page::new(FileName::new("home"), basepath)
     }
 
     pub fn last_modified_page(basepath: &Path) -> SystemTime {
