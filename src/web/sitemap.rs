@@ -19,6 +19,15 @@ struct EntryFactory<'settings> {
     buf: String,
 }
 
+#[get("/robots.txt")]
+pub(crate) fn robots(settings: &State<Settings>) -> String {
+    format!(
+        "User-Agent: *\nDisallow: \nSitemap: https://{}{}\n",
+        settings.domain,
+        uri!(show)
+    )
+}
+
 #[get("/sitemap.xml")]
 pub(crate) fn show<'r>(
     settings: &State<Settings>,

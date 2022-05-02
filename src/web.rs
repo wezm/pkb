@@ -39,7 +39,7 @@ pub fn rocket() -> Rocket<Build> {
     rocket::build()
         .attach(RequestTimer(None))
         .manage(adapter)
-        .mount("/", routes![home, sitemap::show])
+        .mount("/", routes![home, sitemap::robots, sitemap::show])
         .mount("/", page::routes())
         .mount("/", tag::routes())
         .attach(AdHoc::config::<Settings>())
