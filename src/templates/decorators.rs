@@ -63,16 +63,21 @@ fn process_custom_elements(doc: &NodeRef, basepath: &Path) {
 }
 
 fn trim_pre_whitespace(doc: &NodeRef) {
-    for code in doc.select("pre code").unwrap() {
+    info!("{}", doc.to_string());
+    // Have to collect notes to remove otherwise iteration stop after one pass through the block
+    // https://github.com/kuchiki-rs/kuchiki/issues/57
+    let mut to_detach = Vec::new();
+    for code in doc.select("pre > code").unwrap() {
         let mut next_node = code.as_node().first_child();
-        while let Some(ref node) = next_node {
+        while let Some(node) = next_node {
             let tmp_next = node.next_sibling();
             if node.as_text().is_some() {
-                node.detach();
+                to_detach.push(node);
             }
             next_node = tmp_next;
         }
     }
+    to_detach.iter().for_each(|node| node.detach())
 }
 
 struct RecentlyChangedList;
