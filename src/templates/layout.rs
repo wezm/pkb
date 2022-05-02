@@ -70,7 +70,7 @@ markup::define! {
 }
 
 fn copyright_years(start: u16) -> RangeInclusive<u16> {
-    // TODO: Probably don't need to get there year on every render
+    // TODO: Probably don't need to get the year on every render
     // perhaps it can be cached
     start..=OffsetDateTime::now_utc().year() as u16
 }

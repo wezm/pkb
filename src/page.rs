@@ -137,13 +137,13 @@ impl Page<NotLoaded> {
     }
 
     fn page_files_in(basepath: &Path) -> Vec<PathBuf> {
-        Self::page_file_in_inner(basepath).unwrap_or_else(|_err| {
-            // TODO: log error
+        Self::page_files_in_impl(basepath).unwrap_or_else(|_err| {
+            error!("unable to retrieve page files in {}", basepath.display());
             Vec::new()
         })
     }
 
-    fn page_file_in_inner(basepath: &Path) -> io::Result<Vec<PathBuf>> {
+    fn page_files_in_impl(basepath: &Path) -> io::Result<Vec<PathBuf>> {
         let mut pages = Vec::new();
         let md = OsStr::new("md");
         for entry in fs::read_dir(basepath)?.flatten() {
