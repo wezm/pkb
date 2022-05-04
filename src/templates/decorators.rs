@@ -63,7 +63,6 @@ fn process_custom_elements(doc: &NodeRef, basepath: &Path) {
 }
 
 fn trim_pre_whitespace(doc: &NodeRef) {
-    info!("{}", doc.to_string());
     // Have to collect notes to remove otherwise iteration stop after one pass through the block
     // https://github.com/kuchiki-rs/kuchiki/issues/57
     let mut to_detach = Vec::new();
