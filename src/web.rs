@@ -55,7 +55,7 @@ pub fn catchers() -> Vec<Catcher> {
 #[get("/")]
 pub(crate) fn home<'r>(
     settings: &State<Settings>,
-    adapter: &State<Arc<SyntectAdapter<'_>>>,
+    adapter: &State<Arc<SyntectAdapter>>,
     if_modified_since: Option<IfModifiedSince>,
 ) -> Result<CachedHtml, PkbError> {
     page::show("home", settings, adapter, if_modified_since)

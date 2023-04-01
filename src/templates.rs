@@ -8,7 +8,7 @@ use comrak::plugins::syntect::SyntectAdapter;
 pub use layout::{Layout, Nil};
 
 // Render markdown to HTML
-fn markdown(v: &str, adapter: &SyntectAdapter<'_>) -> String {
+fn markdown(v: &str, adapter: &SyntectAdapter) -> String {
     use comrak::{markdown_to_html_with_plugins, ComrakOptions, ComrakPlugins};
     let mut options = ComrakOptions::default();
     options.render.unsafe_ = true; // Allow raw HTML

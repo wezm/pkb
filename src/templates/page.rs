@@ -6,7 +6,7 @@ use crate::templates::decorators::enhance_markup;
 use crate::{templates, web};
 
 markup::define! {
-    Show<'a>(page: &'a Page<Loaded>, settings: &'a Settings, adapter: &'a SyntectAdapter<'a>) {
+    Show<'a>(page: &'a Page<Loaded>, settings: &'a Settings, adapter: &'a SyntectAdapter) {
         article {
             h1 { a."no-decoration"[href=uri!(web::page::show(name=&page.name)).to_string()] { @page.title() } }
 

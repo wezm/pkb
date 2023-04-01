@@ -19,7 +19,7 @@ pub fn routes() -> Vec<Route> {
 pub(crate) fn show<'r>(
     name: &'r str,
     settings: &State<Settings>,
-    adapter: &State<Arc<SyntectAdapter<'_>>>,
+    adapter: &State<Arc<SyntectAdapter>>,
     modified_since: Option<IfModifiedSince>,
 ) -> Result<CachedHtml, PkbError> {
     let page = Page::new(FileName::new(name), &settings.pages_path)
