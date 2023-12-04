@@ -149,7 +149,7 @@ impl<'r> FromRequest<'r> for StartTime {
     async fn from_request(request: &'r Request<'_>) -> Outcome<Self, Self::Error> {
         match *request.local_cache(|| RequestTimer(None)) {
             RequestTimer(Some(time)) => Outcome::Success(StartTime(time)),
-            RequestTimer(None) => Outcome::Failure((Status::InternalServerError, ())),
+            RequestTimer(None) => Outcome::Error((Status::InternalServerError, ())),
         }
     }
 }
@@ -246,9 +246,9 @@ impl<'r> FromRequest<'r> for IfModifiedSince {
                     .map(|last_modified| {
                         Outcome::Success(IfModifiedSince(last_modified.assume_utc()))
                     })
-                    .unwrap_or_else(|_| Outcome::Forward(()))
+                    .unwrap_or_else(|_| Outcome::Forward(Status::BadRequest))
             }
-            Some(_) | None => Outcome::Forward(()),
+            Some(_) | None => Outcome::Forward(Status::NotFound),
         }
     }
 }
