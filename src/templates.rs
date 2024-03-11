@@ -26,7 +26,7 @@ mod tests {
     #[test]
     fn test_custom_elements() {
         let md = "## Recently Updated Pages\n\n<recently-changed-list></recently-changed-list>\n";
-        let adapter = SyntectAdapter::new("base16-ocean.dark");
+        let adapter = SyntectAdapter::new(Some("base16-ocean.dark"));
         let html = markdown(md, &adapter);
         assert_eq!(html, "<h2>Recently Updated Pages</h2>\n<p><recently-changed-list></recently-changed-list></p>\n")
     }
