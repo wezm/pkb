@@ -34,7 +34,7 @@ pub(crate) enum CachedHtml {
 pub(crate) struct IfModifiedSince(OffsetDateTime);
 
 pub fn rocket() -> Rocket<Build> {
-    let adapter = Arc::new(SyntectAdapter::new("base16-ocean.dark"));
+    let adapter = Arc::new(SyntectAdapter::new(Some("base16-ocean.dark")));
 
     rocket::build()
         .attach(RequestTimer(None))
