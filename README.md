@@ -1,7 +1,7 @@
 # pkb — Personal Knowledge Base
 
 `pkb` is a small [Rust] application that allows you to efficiently publish a
-collection of Markdown files. I run my instance at [linkedlist.org].
+collection of Markdown files. I run my instance at [pkb.wezm.net].
 
 [![Build Status](https://api.cirrus-ci.com/github/wezm/pkb.svg)](https://cirrus-ci.com/github/wezm/pkb)
 
@@ -27,5 +27,5 @@ collection of Markdown files. I run my instance at [linkedlist.org].
 contains the code before it was rewritten in Rust in 2022.
 
 [Rust]: https://www.rust-lang.org/
-[linkedlist.org]: https://linkedlist.org/
+[pkb.wezm.net]: https://pkb.wezm.net/
 [ruby branch]: https://github.com/wezm/pkb/tree/ruby
