@@ -9,7 +9,7 @@ task:
     folder: $HOME/.cargo/registry
     fingerprint_script: cat Cargo.lock
   install_script:
-    - apk --update add gcc musl-dev cargo
+    - apk --update add gcc musl-dev cargo oniguruma-dev
   test_script:
-    - cargo test
+    - RUSTONIG_SYSTEM_LIBONIG=1 cargo test
   before_cache_script: rm -rf $HOME/.cargo/registry/index
