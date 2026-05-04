@@ -16,11 +16,11 @@ sentry = { version = "0.32.2", default-features = false, features = ["backtrace"
 serde = { version = "1.0", features = ["derive"] }
 serde_yaml = "0.9.34"
 sitemap = { git = "https://github.com/wezm/rust-sitemap-time.git", rev = "96d0d81" }
-time = { version = "0.3.34", features = ["std", "formatting", "parsing", "macros"] } # version should match rocket
+time = { version = "0.3.47", features = ["std", "formatting", "parsing", "macros"] } # version should match rocket
 titlecase = "3.0"
 
 [build-dependencies]
-time = { version = "0.3.34", features = [] } # version should match above
+time = { version = "0.3.47", features = [] } # version should match above
 
 [dev-dependencies.regex]
 version = "1.10"
